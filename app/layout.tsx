@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MONO AI - AI & SaaS Template",
+  title: "Figma-to-Front",
   description: "A responsive Next.js clone of the MONO AI Framer landing page.",
 };
 

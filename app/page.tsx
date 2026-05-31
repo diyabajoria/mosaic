@@ -9,7 +9,7 @@ const gradientImages = [
   "https://framerusercontent.com/images/2JQhaxBHmW5sc4O8xOEtc5ogk.png",
 ];
 
-const navItems = ["About", "Pricing", "Changelog", "Contact"];
+const navItems = ["About", "Workflow", "Generate", "Contact"];
 
 const coreCards = [
   {
@@ -29,29 +29,29 @@ const coreCards = [
   },
 ];
 
-const productSections = [
-  {
-    kicker: "AI chat",
-    title: "Chat experience for fast and smart conversations",
-    text: "A conversational AI assistant that understands your questions, provides intelligent answers, and helps you get things done fast from casual chats to complex tasks.",
-    image: gradientImages[0],
-    tone: "chat",
-  },
-  {
-    kicker: "AI assistant",
-    title: "AI assistant for efficient time management",
-    text: "Let the AI schedule meetings, set reminders, and automatically attach relevant files. Save time and stay better organized with intelligent and context aware planning.",
-    image: gradientImages[1],
-    tone: "assistant",
-  },
-  {
-    kicker: "AI transcription",
-    title: "Audio transcription for fast and accurate text",
-    text: "Automatically convert speech into accurate, editable text in real time. Perfect for meetings, interviews, voice notes, and more, powered by advanced speech recognition technology.",
-    image: gradientImages[2],
-    tone: "audio",
-  },
-];
+// const productSections = [
+//   {
+//     kicker: "AI chat",
+//     title: "Chat experience for fast and smart conversations",
+//     text: "A conversational AI assistant that understands your questions, provides intelligent answers, and helps you get things done fast from casual chats to complex tasks.",
+//     image: gradientImages[0],
+//     tone: "chat",
+//   },
+//   {
+//     kicker: "AI assistant",
+//     title: "AI assistant for efficient time management",
+//     text: "Let the AI schedule meetings, set reminders, and automatically attach relevant files. Save time and stay better organized with intelligent and context aware planning.",
+//     image: gradientImages[1],
+//     tone: "assistant",
+//   },
+//   {
+//     kicker: "AI transcription",
+//     title: "Audio transcription for fast and accurate text",
+//     text: "Automatically convert speech into accurate, editable text in real time. Perfect for meetings, interviews, voice notes, and more, powered by advanced speech recognition technology.",
+//     image: gradientImages[2],
+//     tone: "audio",
+//   },
+// ];
 
 const features = [
   ["Voice intelligence", "Convert speech to text, generate realistic audio, and integrate voice commands with seamless AI interaction."],
@@ -168,11 +168,11 @@ export default function Home() {
       <section className="hero">
         <video aria-hidden="true" autoPlay muted loop playsInline src={heroVideo} />
         <div className="hero-content">
-          <a className="pill" href="#">✦ Announcing API 2.0</a>
+          {/* <a className="pill" href="#">✦ Announcing API 2.0</a> */}
           <h1>
-            The AI layer that brings <em>clarity</em> to complexity.
+            Your Figma deserves <em> better</em> than manual coding. 
           </h1>
-          <p>Our platform integrates seamlessly into your stack to deliver real-time understanding, not just predictions.</p>
+          <p>Generate clean, responsive frontend code directly from your Figma designs using AI-powered automation.</p>
           <div className="actions">
             <Button>Get started</Button>
             <Button variant="ghost">Learn more</Button>
@@ -181,19 +181,31 @@ export default function Home() {
       </section>
 
       <section className="logos" id="about">
-        <p>Trusted by industry leaders</p>
+        <p>they hate us coz they ain't us</p>
+        <h5>Powered By</h5>
         <div>
-          {["Springfield", "Orbitc", "Cloud", "Amsterdam"].map((logo) => (
+          {["Sarcasm", "God complex", "Cuteness", "Humour"].map((logo) => (
             <span key={logo}>{logo}</span>
           ))}
         </div>
       </section>
 
       <section className="manifesto">
-        <p>We believe that AI <strong>✧</strong> should amplify human potential-not replace it.</p>
-        <p>By designing tools that are smart, ethical, and intuitive, we help people <strong>⌘</strong> unlock deeper insights, work more creatively, and make better decisions.</p>
-        <p>With technology <strong>▣</strong> that adapts to real-world needs, we&apos;re shaping a future where humans and AI build together.</p>
-      </section>
+        <p>
+  We believe frontend development <strong>✧</strong> should feel creative - not repetitive.
+</p>
+
+<p>
+  By building tools that are fast, intelligent, and intuitive, we help developers{" "}
+  <strong>⌘</strong> transform Figma designs into responsive frontend experiences
+  with less manual effort.
+</p>
+
+<p>
+  With AI-assisted workflows <strong>▣</strong> designed for modern creators,
+  we&apos;re simplifying the journey from design to deployment.
+</p>
+</section>
 
       <section className="core">
         <h2>The core of smarter innovation</h2>
@@ -210,7 +222,7 @@ export default function Home() {
       </section>
 
       <section className="products">
-        {productSections.map((section, index) => (
+        {/* {productSections.map((section, index) => (
           <article className="product-row" key={section.title}>
             <div className="product-copy">
               <span className="kicker">✧ {section.kicker}</span>
@@ -220,10 +232,10 @@ export default function Home() {
             </div>
             <Mockup tone={section.tone} image={section.image} />
           </article>
-        ))}
+        ))} */}
       </section>
 
-      <section className="feature-section">
+      {/* <section className="feature-section">
         <h2>Explore the powerful AI features that drive business growth</h2>
         <div className="feature-grid">
           {features.map(([title, text], index) => (
@@ -234,7 +246,7 @@ export default function Home() {
             </article>
           ))}
         </div>
-      </section>
+      </section> */}
 
       <section className="case-studies">
         <h2>Meet the companies working more efficiently with AI</h2>
@@ -314,7 +326,7 @@ export default function Home() {
       <footer>
         <div>
           <Logo />
-          <p>Speed, scale, and smarts - deployed.</p>
+          <p>Built for modern frontend workflows.</p>
         </div>
         <div>
           <h3>Product</h3>
@@ -328,7 +340,8 @@ export default function Home() {
           <h3>Connect</h3>
           {["Instagram", "YouTube", "LinkedIn", "Twitter / X"].map((item) => <a href="#" key={item}>{item}</a>)}
         </div>
-        <p className="copyright">© 2026 MONO AI. All rights reserved <span>by Dream Studio</span> <span>Made in Framer</span></p>
+        
+        <p className="copyright">Made with ❤️ by Diya & Vishal</p>
       </footer>
     </main>
   );
