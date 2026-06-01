@@ -789,6 +789,52 @@ blockquote {
   font-size: 14px;
 }
 
+.marquee-track {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  margin-top: 2rem;
+}
+
+.marquee-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 3rem;
+  white-space: nowrap;
+
+  animation: marquee 12s linear infinite;
+}
+
+.marquee-inner span {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+
+  flex-shrink: 0;
+
+  font-size: 1.2rem;
+  font-weight: 700;
+
+  color: #8f8f8f;
+}
+
+.marquee-inner em {
+  font-style: normal;
+  color: #cfcfcf;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 1.5rem));
+  }
+}
+
 .faq h2 {
   margin-bottom: 52px;
 }
@@ -867,7 +913,7 @@ footer {
 
 footer h3 {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 22px;
 }
 

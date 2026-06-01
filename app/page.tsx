@@ -79,11 +79,11 @@ const nextGen = [
 ];
 
 const faqs = [
-  "Is my data safe with your platform?",
-  "What kind of customer support do you offer?",
-  "How does the pricing for your web solution work?",
-  "Can I cancel my subscription at any time?",
-  "Can I upgrade or downgrade my subscription plan?",
+  "Do I need coding experience to use the platform?",
+  "Can my team collaborate on projects together?",
+  "How accurate is the generated frontend code?",
+  "What happens if the AI generates something incorrect?",
+  "Can I customize the generated code manually?",
 ];
 
 type ManifestoPart = string | { symbol: string };
@@ -103,21 +103,21 @@ function Logo() {
   );
 }
 
-function Button({ children, variant = "primary" }: { children: ReactNode; variant?: "primary" | "ghost" }) {
-  return (
-    <a className={`button ${variant}`} href="#">
-      {children}
-    </a>
-  );
-}
+import Link from "next/link";
 
-function LineIcon({ type }: { type: string }) {
+function Button({
+  children,
+  variant = "primary",
+  href = "/",
+}: {
+  children: ReactNode;
+  variant?: "primary" | "ghost";
+  href?: string;
+}) {
   return (
-    <span className={`line-icon ${type}`} aria-hidden="true">
-      <span />
-      <span />
-      <span />
-    </span>
+    <Link href={href} className={`button ${variant}`}>
+      {children}
+    </Link>
   );
 }
 
@@ -197,6 +197,17 @@ function AnimatedWords({ parts }: { parts: ManifestoPart[] }) {
   );
 }
 
+
+function LineIcon({ type }: { type: string }) {
+  return (
+    <span className={`line-icon ${type}`} aria-hidden="true">
+      <span />
+      <span />
+      <span />
+    </span>
+  );
+}
+
 export default function Home() {
   const manifestoRef = useRef<HTMLElement>(null);
 
@@ -210,9 +221,9 @@ export default function Home() {
       scrollTrigger: {
         trigger: manifestoRef.current,
         start: "top 20%",
-        end: "+=1200",        // 2000px of scroll distance regardless of element height
+        end: "+=1200",        
         scrub: 2,
-        pin: true,  // pins the section while scrolling through it
+        pin: true, 
       },
     });
 
@@ -246,7 +257,7 @@ export default function Home() {
             </a>
           ))}
         </nav>
-        <Button>Get started</Button>
+        <Button href="/generate">Get started</Button>
       </header>
 
       <section className="hero">
@@ -258,21 +269,34 @@ export default function Home() {
           </h1>
           <p>Generate clean, responsive frontend code directly from your Figma designs using AI-powered automation.</p>
           <div className="actions">
-            <Button>Get started</Button>
-            <Button variant="ghost">Learn more</Button>
+            <Button href="/generate">Get started</Button>
+            <Button href="/learn-more" variant="ghost">
+              Learn more
+            </Button>
           </div>
         </div>
       </section>
 
-      <section className="logos" id="about">
-        <p>they hate us coz they ain't us</p>
-        <h5>Powered By</h5>
-        <div>
-          {["Sarcasm", "God complex", "Cuteness", "Humour"].map((logo) => (
-            <span key={logo}>{logo}</span>
-          ))}
-        </div>
-      </section>
+ <section className="logos" id="about">
+  <p>they hate us coz they ain't us</p>
+  <h5>Powered By</h5>
+
+  <div className="marquee-track">
+    <div className="marquee-inner">
+      {[
+        "Sarcasm",
+        "God complex",
+        "Cuteness",
+        "Humour",
+      ].map((logo, i) => (
+        <span key={i}>
+          {logo}
+          <em>✦</em>
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
 
       <section className="manifesto" ref={manifestoRef}>
         <div className="manifesto-copy">
@@ -385,7 +409,7 @@ export default function Home() {
           {faqs.map((faq) => (
             <details key={faq}>
               <summary>{faq}<span>+</span></summary>
-              <p>Yes. MONO AI is designed around secure data handling, flexible plans, and responsive support for growing teams.</p>
+              <p>backend guy is responsible</p>
             </details>
           ))}
         </div>
@@ -394,6 +418,7 @@ export default function Home() {
       <section className="cta">
         <video aria-hidden="true" autoPlay muted loop playsInline src={heroVideo} />
         <h2>Ready to automate everything?</h2>
+
         <div className="actions">
           <Button>Get started</Button>
           <Button variant="ghost">Learn more</Button>
@@ -415,7 +440,7 @@ export default function Home() {
         </div>
         <div>
           <h3>Connect</h3>
-          {["Instagram", "YouTube", "LinkedIn", "Twitter / X"].map((item) => <a href="#" key={item}>{item}</a>)}
+          {["Instagram", "LinkedIn", "Twitter / X"].map((item) => <a href="#" key={item}>{item}</a>)}
         </div>
         
         <p className="copyright">Made with ❤️ by Diya & Vishal</p>
