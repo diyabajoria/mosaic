@@ -297,6 +297,10 @@ export default function Home() {
         "God complex",
         "Cuteness",
         "Humour",
+        "Sarcasm",
+        "God complex",
+        "Cuteness",
+        "Humour",
       ].map((logo, i) => (
         <span key={i}>
           {logo}

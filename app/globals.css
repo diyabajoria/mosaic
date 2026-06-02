@@ -232,14 +232,6 @@ h1 em {
   margin-bottom: 28px;
 }
 
-.logos div {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
-}
-
 .logos span {
   color: rgba(255, 255, 255, 0.5);
   font-size: 18px;
@@ -801,11 +793,12 @@ blockquote {
 }
 
 .marquee-inner {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: nowrap;
+  width: max-content; 
   align-items: center;
   gap: 3rem;
   white-space: nowrap;
-
   animation: marquee 12s linear infinite;
 }
 
