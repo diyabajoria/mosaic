@@ -19,7 +19,7 @@ const gradientImages = [
   "https://framerusercontent.com/images/2JQhaxBHmW5sc4O8xOEtc5ogk.png",
 ];
 
-const navItems = ["About", "Workflow", "Generate", "Contact"];
+const navItems = ["About", "Workflow", "Generate", "FAQs", "Contact"];
 
 const coreCards = [
   {
@@ -236,7 +236,7 @@ export default function Home() {
         scrollTrigger: {
           trigger: manifestoRef.current,
           start: "top 20%",
-          end: "+=1200",
+          end: "+=400",
           scrub: 2,
           pin: true,
         },
@@ -269,6 +269,7 @@ export default function Home() {
           {navItems.map((item) => (
             <a href={`#${item.toLowerCase()}`} key={item}>
               {item}
+              
             </a>
           ))}
 
