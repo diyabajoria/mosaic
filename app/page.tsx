@@ -302,6 +302,9 @@ export default function Home() {
           <div className="actions">
             <Button href="/signup" onClick={() => setAuthMode("signup")}>Get started</Button>
             <Button href="/login" onClick={() => setAuthMode("login")} variant="ghost">Sign in</Button>
+            <Button href="/nextpage" variant="ghost">
+              Next Page
+            </Button>
           </div>
         </div>
       </section>
