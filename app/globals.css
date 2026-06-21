@@ -14,7 +14,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -1082,6 +1082,10 @@ footer .brand {
   gap: 12px;
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
+}
+
+.oauth-secondary-single {
+  grid-template-columns: 1fr;
 }
 
 .oauth-secondary button,

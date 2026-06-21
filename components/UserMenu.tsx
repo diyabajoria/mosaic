@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 export default function UserMenu() {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function UserMenu() {
 
   const userName = session.user.name ?? "User";
   const userEmail = session.user.email ?? "";
-  const userImage = session.user.image;
+  const userImage = imageFailed ? null : session.user.image;
 
   return (
     <div className="user-menu" ref={menuRef}>
@@ -40,7 +41,7 @@ export default function UserMenu() {
         type="button"
       >
         {userImage ? (
-          <img alt={userName} src={userImage} />
+          <img alt={userName} onError={() => setImageFailed(true)} referrerPolicy="no-referrer" src={userImage} />
         ) : (
           <User size={20} />
         )}

@@ -44,28 +44,6 @@ function GitHubIcon() {
   );
 }
 
-function AppleIcon() {
-  return (
-    <svg aria-hidden="true" className="oauth-icon oauth-icon-apple" viewBox="0 0 24 24">
-      <path
-        d="M17.05 12.66c-.02-2.05 1.68-3.04 1.76-3.09-.96-1.4-2.45-1.59-2.97-1.61-1.25-.13-2.46.75-3.09.75-.65 0-1.62-.73-2.67-.71-1.35.02-2.62.81-3.31 2.04-1.43 2.48-.36 6.12 1.01 8.12.69.98 1.49 2.08 2.54 2.04 1.03-.04 1.42-.65 2.67-.65 1.24 0 1.6.65 2.68.63 1.11-.02 1.81-.98 2.48-1.97.79-1.12 1.1-2.23 1.11-2.29-.03-.01-2.18-.84-2.21-3.26zM15.02 6.63c.56-.7.94-1.64.84-2.59-.81.04-1.82.56-2.4 1.24-.52.61-.99 1.59-.87 2.51.91.07 1.84-.47 2.43-1.16z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-function FacebookIcon() {
-  return (
-    <svg aria-hidden="true" className="oauth-icon" viewBox="0 0 24 24">
-      <path
-        d="M23 12.07C23 5.95 18.07 1 12 1S1 5.95 1 12.07C1 17.6 5.02 22.18 10.28 23v-7.73H7.49v-3.2h2.79V9.63c0-2.77 1.64-4.3 4.15-4.3 1.2 0 2.46.22 2.46.22v2.72h-1.38c-1.36 0-1.79.85-1.79 1.72v2.08h3.04l-.49 3.2h-2.55V23C18.98 22.18 23 17.6 23 12.07z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
 export default function AuthForm({ mode, onModeChange }: AuthFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -127,7 +105,7 @@ export default function AuthForm({ mode, onModeChange }: AuthFormProps) {
     router.refresh();
   }
 
-  function handleOAuth(provider: "apple" | "facebook" | "github" | "google") {
+  function handleOAuth(provider: "github" | "google") {
     void signIn(provider, { callbackUrl });
   }
 
@@ -146,15 +124,10 @@ export default function AuthForm({ mode, onModeChange }: AuthFormProps) {
             Continue with Google
           </button>
 
-          <div className="oauth-secondary">
-            <button type="button" aria-label="Continue with GitHub" onClick={() => handleOAuth("github")}>
+          <div className="oauth-secondary oauth-secondary-single">
+            <button type="button" onClick={() => handleOAuth("github")}>
               <GitHubIcon />
-            </button>
-            <button type="button" aria-label="Continue with Apple" onClick={() => handleOAuth("apple")}>
-              <AppleIcon />
-            </button>
-            <button type="button" aria-label="Continue with Facebook" onClick={() => handleOAuth("facebook")}>
-              <FacebookIcon />
+              Continue with GitHub
             </button>
           </div>
 

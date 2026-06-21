@@ -1,9 +1,7 @@
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import bcrypt from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
-import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
-import FacebookProvider from "next-auth/providers/facebook";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { z } from "zod";
@@ -27,21 +25,10 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-      allowDangerousEmailAccountLinking: false,
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID ?? "",
       clientSecret: process.env.GITHUB_SECRET ?? "",
-      allowDangerousEmailAccountLinking: false,
-    }),
-    AppleProvider({
-      clientId: process.env.APPLE_ID ?? "",
-      clientSecret: process.env.APPLE_SECRET ?? "",
-    }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID ?? "",
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET ?? "",
-      allowDangerousEmailAccountLinking: false,
     }),
     CredentialsProvider({
       name: "Email and password",
@@ -93,13 +80,37 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.picture = user.image;
+      } else if (process.env.MONGODB_URI && token.email && !token.picture) {
+        const client = await clientPromise;
+        const dbUser = await client
+          .db()
+          .collection("users")
+          .findOne<{ _id: object; name?: string | null; email?: string | null; image?: string | null }>({
+            email: String(token.email).toLowerCase(),
+          });
+
+        if (dbUser) {
+          token.id = token.id ?? dbUser._id.toString();
+          token.name = token.name ?? dbUser.name;
+          token.email = token.email ?? dbUser.email;
+          token.picture = dbUser.image ?? token.picture;
+        }
       }
 
       return token;
     },
     async session({ session, token }) {
-      if (session.user && token.id) {
-        session.user.id = String(token.id);
+      if (session.user) {
+        if (token.id) {
+          session.user.id = String(token.id);
+        }
+
+        session.user.name = token.name ?? session.user.name;
+        session.user.email = token.email ?? session.user.email;
+        session.user.image = token.picture ?? session.user.image;
       }
 
       return session;
