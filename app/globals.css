@@ -1667,3 +1667,75 @@ footer .brand {
     font-size: 13px;
   }
 }
+.developers {
+  padding: 8rem 6rem;
+  text-align: center;
+}
+
+.developers h2 {
+  font-size: clamp(38px, 4.8vw, 58px);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 1.05;
+  text-align: center;
+  padding-bottom: 50px;
+}
+
+.developers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.developer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.developer-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.5rem;
+}
+
+.developer-card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.developer-card p {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 2rem;
+}
+
+.developer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.developer-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.developer-links a:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .developers {
+    padding: 6rem 1.5rem;
+  }
+
+  .developers-grid {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+}

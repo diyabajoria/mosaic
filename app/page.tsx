@@ -19,7 +19,7 @@ const gradientImages = [
   "https://framerusercontent.com/images/2JQhaxBHmW5sc4O8xOEtc5ogk.png",
 ];
 
-const navItems = ["About", "Workflow", "Generate", "FAQs", "Contact"];
+const navItems = ["About", "Workflow", "FAQs", "Contact", "Generate"];
 
 const coreCards = [
   {
@@ -286,18 +286,12 @@ export default function Home() {
       <header className="site-header">
         <Logo />
         <nav>
-          {navItems.map((item) => {
-            const href =
-              item === "Generate" ? "/generate" : `#${item.toLowerCase()}`;
-
-            return (
-              <a href={href} key={item}>
-                {item}
-              </a>
-            );
-          })}
-
-        </nav>
+        {navItems.map((item) => (
+          <a href={`#${item.toLowerCase()}`} key={item}>
+            {item}
+          </a>
+        ))}
+      </nav>
           <div className="header-auth">
 
 
@@ -366,7 +360,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="core">
+      <section className="core" id="workflow">
         <h2>The core of smarter innovation</h2>
         <div className="core-grid">
           {coreCards.map((card) => (
@@ -500,7 +494,7 @@ export default function Home() {
         <div className="person"><span /> <p><b>Daniel Ortiz</b><small>Product Manager at CloudNest</small></p></div>
       </section>
 
-     <section className="faq" id="contact">
+     <section className="faq" id="faqs">
       <h2>We&apos;ve got answers</h2>
 
       <div className="faq-list">
@@ -515,8 +509,71 @@ export default function Home() {
         ))}
       </div>
     </section>
+   <section className="developers" id="contact">
+  <h2>Meet the Developers</h2>
 
-      <section className="cta">
+  <div className="developers-grid">
+    <div className="developer-card">
+      <img
+        src="/images/diya.jpg"
+        alt="Diya Bajoria"
+        width={120}
+  height={120}
+        className="developer-avatar"
+      />  
+
+      <h3>Diya Bajoria</h3>
+      <p>Frontend Developer & Designer</p>
+
+      <div className="developer-links">
+        <a
+          href="https://www.linkedin.com/in/diya-bajoria-375367335/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="https://github.com/diyabajoria"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <div className="developer-card">
+      <img
+        src="/vishal.jpg"
+        alt="Vishal"
+        className="developer-avatar"
+      />
+
+      <h3>Vishal</h3>
+      <p>Backend Developer</p>
+
+      <div className="developer-links">
+        <a
+          href="https://www.linkedin.com/in/vishal-vaibhav01/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="https://github.com/VishalVab01"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+      <section className="cta" id="generate">
         <video aria-hidden="true" autoPlay muted loop playsInline src={heroVideo} />
         <h2>Ready to automate everything?</h2>
 
@@ -530,8 +587,7 @@ export default function Home() {
         <div>
           <Logo 
           />
-          <p>Built for modern fr
-            ontend workflows.</p>
+          <p>Built for modern frontend workflows.</p>
         </div>
         <div>
           <h3>Product</h3>
@@ -542,12 +598,28 @@ export default function Home() {
           {["Terms of service", "Privacy policy", "404"].map((item) => <a href="#" key={item}>{item}</a>)}
         </div>
         <div>
-          <h3>Connect</h3>
-          {["Instagram", "LinkedIn", "Twitter / X"].map((item) => <a href="#" key={item}>{item}</a>)}
-        </div>
+        <h3>Connect</h3>
+        
+        <a
+          href="https://www.linkedin.com/in/diya-bajoria-375367335/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn
+        </a>
+
+        <a
+          href="https://github.com/diyabajoria"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+      </div>
         
         <p className="copyright">Made with ❤️ by Diya & Vishal</p>
       </footer>
+      
 
       {authMode && (
         <div className="auth-modal" role="dialog" aria-modal="true" aria-label="Authentication">
