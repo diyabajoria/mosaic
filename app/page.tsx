@@ -82,11 +82,31 @@ const nextGen = [
 ];
 
 const faqs = [
-  "Do I need coding experience to use the platform?",
-  "Can my team collaborate on projects together?",
-  "How accurate is the generated frontend code?",
-  "What happens if the AI generates something incorrect?",
-  "Can I customize the generated code manually?",
+  {
+    question: "Do I need coding experience to use the platform?",
+    answer:
+      "No. Simply describe what you want in plain English, and the platform generates the frontend for you.",
+  },
+  {
+    question: "Can my team collaborate on projects together?",
+    answer:
+      "Not yet. The platform is currently designed for individual use. You can download the generated ZIP file and share it with your teammates.",
+  },
+  {
+    question: "How accurate is the generated frontend code?",
+    answer:
+      "The generated code is highly accurate for most common UI patterns and layouts, though complex designs may need minor adjustments.",
+  },
+  {
+    question: "What happens if the AI generates something incorrect?",
+    answer:
+      "You can refine your prompt and regenerate the code. Small tweaks can also be made manually in the generated files.",
+  },
+  {
+    question: "Can I customize the generated code manually?",
+    answer:
+      "Absolutely. You get clean, editable code that you can modify, extend, and integrate into your existing projects.",
+  },
 ];
 
 type ManifestoPart = string | { symbol: string };
@@ -480,17 +500,21 @@ export default function Home() {
         <div className="person"><span /> <p><b>Daniel Ortiz</b><small>Product Manager at CloudNest</small></p></div>
       </section>
 
-      <section className="faq" id="contact">
-        <h2>We&apos;ve got answers</h2>
-        <div className="faq-list">
-          {faqs.map((faq) => (
-            <details key={faq}>
-              <summary>{faq}<span>+</span></summary>
-              <p>backend guy is responsible</p>
-            </details>
-          ))}
-        </div>
-      </section>
+     <section className="faq" id="contact">
+      <h2>We&apos;ve got answers</h2>
+
+      <div className="faq-list">
+        {faqs.map((faq) => (
+          <details key={faq.question}>
+            <summary>
+              {faq.question}
+              <span>+</span>
+            </summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
 
       <section className="cta">
         <video aria-hidden="true" autoPlay muted loop playsInline src={heroVideo} />
