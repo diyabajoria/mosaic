@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { Suspense, useEffect, useRef, useState } from "react";
-import type { ReactNode } from "react";
+import type { FormEvent, ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AuthForm from "../components/AuthForm";
@@ -231,18 +231,45 @@ function AnimatedWords({ parts }: { parts: ManifestoPart[] }) {
 
 
 function LineIcon({ type }: { type: string }) {
+  if (type === "orbit") {
+    return (
+      <svg className="line-icon orbit" aria-hidden="true" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="44" />
+        <circle cx="55" cy="55" r="16" />
+        <path d="M28 35c23-10 48-6 70 12" />
+        <path d="M22 64c22 18 48 22 76 7" />
+      </svg>
+    );
+  }
+
+  if (type === "data") {
+    return (
+      <svg className="line-icon data" aria-hidden="true" viewBox="0 0 110 110">
+        <ellipse cx="55" cy="29" rx="30" ry="11" />
+        <ellipse cx="55" cy="50" rx="30" ry="11" />
+        <ellipse cx="55" cy="71" rx="30" ry="11" />
+      </svg>
+    );
+  }
+
   return (
-    <span className={`line-icon ${type}`} aria-hidden="true">
-      <span />
-      <span />
-      <span />
-    </span>
+    <svg className="line-icon layers" aria-hidden="true" viewBox="0 0 110 110">
+      <rect x="22" y="22" width="38" height="58" rx="11" />
+      <rect x="38" y="22" width="38" height="58" rx="11" />
+      <rect x="54" y="22" width="38" height="58" rx="11" />
+    </svg>
   );
 }
 
 export default function Home() {
   const manifestoRef = useRef<HTMLElement>(null);
   const [authMode, setAuthMode] = useState<"login" | "signup" | null>(null);
+  const [feedbackName, setFeedbackName] = useState("");
+  const [feedbackEmail, setFeedbackEmail] = useState("");
+  const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [feedbackStatus, setFeedbackStatus] = useState("");
+  const [feedbackError, setFeedbackError] = useState("");
+  const [isSendingFeedback, setIsSendingFeedback] = useState(false);
 
   const { data: session, status } = useSession();
 
@@ -251,6 +278,7 @@ export default function Home() {
 
     const context = gsap.context(() => {
       const words = gsap.utils.toArray<HTMLElement>(".manifesto-word");
+      const iconGroups = gsap.utils.toArray<SVGSVGElement>(".line-icon");
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -276,10 +304,65 @@ export default function Home() {
           duration: 1,
         }
       );
-    }, manifestoRef);
+
+      iconGroups.forEach((icon) => {
+        const strokes = Array.from(icon.querySelectorAll<SVGGeometryElement>("path, circle, ellipse, rect"));
+
+        gsap.set(strokes, {
+          strokeDasharray: (_index, target: SVGGeometryElement) => target.getTotalLength(),
+          strokeDashoffset: (_index, target: SVGGeometryElement) => target.getTotalLength(),
+        });
+
+        gsap.to(strokes, {
+          strokeDashoffset: 0,
+          duration: 1.35,
+          ease: "power2.out",
+          stagger: 0.14,
+          scrollTrigger: {
+            trigger: icon,
+            start: "top 78%",
+            toggleActions: "play none none reverse",
+          },
+        });
+      });
+    });
 
     return () => context.revert();
   }, []);
+
+  async function handleFeedbackSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setFeedbackError("");
+    setFeedbackStatus("");
+    setIsSendingFeedback(true);
+
+    try {
+      const response = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: feedbackName,
+          email: feedbackEmail,
+          message: feedbackMessage,
+        }),
+      });
+      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+
+      if (!response.ok) {
+        throw new Error(payload?.error ?? "Could not send feedback right now.");
+      }
+
+      setFeedbackName("");
+      setFeedbackEmail("");
+      setFeedbackMessage("");
+      setFeedbackStatus("Thanks for the feedback. We really appreciate it.");
+    } catch (error) {
+      setFeedbackError(error instanceof Error ? error.message : "Could not send feedback right now.");
+    } finally {
+      setIsSendingFeedback(false);
+    }
+  }
 
   return (
     <main>
@@ -496,9 +579,71 @@ export default function Home() {
         </div>
       </section> */}
 
-      <section className="quote">
-        <blockquote>&quot;The AI does the heavy lifting so our team can focus on strategy. We&apos;re faster, more efficient, and more confident in decisions.&quot;</blockquote>
-        <div className="person"><span /> <p><b>Daniel Ortiz</b><small>Product Manager at CloudNest</small></p></div>
+      <section className="feedback" aria-labelledby="feedback-title">
+        <div className="feedback-copy">
+          <span>Feedback</span>
+          <h2 id="feedback-title">Built because repetitive work is boring.</h2>
+          <p>We wanted a tool that feels fast, useful, and simple from the first click. Mosaic is launching today, and your feedback decides what gets better next.</p>
+          <div className="feedback-badges" aria-label="Mosaic values">
+            <b>No fake testimonials</b>
+            <b>Built in public</b>
+            <b>Improving daily</b>
+          </div>
+        </div>
+
+        <form className="feedback-form" onSubmit={handleFeedbackSubmit}>
+          <div className="feedback-form-heading">
+            <h3>Help us improve Mosaic</h3>
+            <p>Found something confusing, broken, or missing? Tell us.</p>
+          </div>
+
+          <div className="feedback-row">
+            <label>
+              Name
+              <input
+                autoComplete="name"
+                name="name"
+                onChange={(event) => setFeedbackName(event.target.value)}
+                placeholder="Your name"
+                required
+                type="text"
+                value={feedbackName}
+              />
+            </label>
+
+            <label>
+              Email
+              <input
+                autoComplete="email"
+                name="email"
+                onChange={(event) => setFeedbackEmail(event.target.value)}
+                placeholder="you@example.com"
+                required
+                type="email"
+                value={feedbackEmail}
+              />
+            </label>
+          </div>
+
+          <label>
+            Feedback
+            <textarea
+              name="message"
+              onChange={(event) => setFeedbackMessage(event.target.value)}
+              placeholder="What should we improve, fix, or build next?"
+              required
+              rows={5}
+              value={feedbackMessage}
+            />
+          </label>
+
+          <button disabled={isSendingFeedback} type="submit">
+            {isSendingFeedback ? "Sending..." : "Send feedback →"}
+          </button>
+
+          {feedbackStatus && <p className="feedback-success" role="status">{feedbackStatus}</p>}
+          {feedbackError && <p className="feedback-error" role="alert">{feedbackError}</p>}
+        </form>
       </section>
 
      <section className="faq" id="faqs">

@@ -352,74 +352,30 @@ footer p {
 }
 
 .line-icon {
-  border: 2px solid #fff;
   display: block;
   height: 98px;
   opacity: 0.95;
-  position: relative;
+  overflow: visible;
   width: 98px;
 }
 
-.line-icon.orbit {
-  border-radius: 50%;
+.line-icon path,
+.line-icon circle,
+.line-icon ellipse,
+.line-icon rect {
+  fill: none;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
+  vector-effect: non-scaling-stroke;
 }
 
-.line-icon.orbit span {
-  border: 2px solid #fff;
-  border-radius: 50%;
-  height: 36px;
-  left: 29px;
-  position: absolute;
-  top: 29px;
-  width: 36px;
+.line-icon.layers rect {
+  transform: skewY(27deg);
+  transform-box: fill-box;
+  transform-origin: center;
 }
-
-.line-icon.orbit span:nth-child(2) {
-  border-left-color: transparent;
-  border-right-color: transparent;
-  height: 52px;
-  left: 5px;
-  top: 21px;
-  transform: rotate(9deg);
-  width: 84px;
-}
-
-.line-icon.data {
-  border: 0;
-}
-
-.line-icon.data span {
-  border: 2px solid #fff;
-  border-radius: 50%;
-  height: 22px;
-  left: 17px;
-  position: absolute;
-  top: calc(12px + var(--i, 0) * 18px);
-  width: 64px;
-}
-
-.line-icon.data span:nth-child(1) { --i: 0; }
-.line-icon.data span:nth-child(2) { --i: 1; }
-.line-icon.data span:nth-child(3) { --i: 2; }
-
-.line-icon.layers {
-  border: 0;
-}
-
-.line-icon.layers span {
-  border: 2px solid #fff;
-  border-radius: 14px;
-  height: 58px;
-  left: calc(8px + var(--i, 0) * 15px);
-  position: absolute;
-  top: 20px;
-  transform: skewY(28deg);
-  width: 54px;
-}
-
-.line-icon.layers span:nth-child(1) { --i: 0; }
-.line-icon.layers span:nth-child(2) { --i: 1; }
-.line-icon.layers span:nth-child(3) { --i: 2; }
 
 .products {
   display: grid;
@@ -761,10 +717,184 @@ footer p {
   line-height: 1.42;
 }
 
-.quote {
+.feedback {
+  align-items: center;
+  display: grid;
+  gap: clamp(42px, 6vw, 82px);
+  grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1fr);
   margin: 0 auto;
-  max-width: 790px;
-  padding: 150px 24px;
+  max-width: 1160px;
+  min-height: 620px;
+  padding: 96px 40px 110px;
+}
+
+.feedback-copy span {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.78);
+  display: flex;
+  font-size: 14px;
+  font-weight: 800;
+  height: 32px;
+  justify-content: center;
+  margin-bottom: 24px;
+  padding: 0 13px;
+  width: max-content;
+}
+
+.feedback-copy h2 {
+  font-size: clamp(42px, 5vw, 66px);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  max-width: 590px;
+}
+
+.feedback-copy p {
+  color: var(--muted);
+  font-size: clamp(17px, 1.7vw, 20px);
+  line-height: 1.55;
+  margin-top: 26px;
+  max-width: 560px;
+}
+
+.feedback-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.feedback-badges b {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 13px;
+  font-weight: 800;
+  padding: 10px 13px;
+}
+
+.feedback-form {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035)),
+    #050505;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+  display: grid;
+  gap: 20px;
+  padding: clamp(24px, 3vw, 34px);
+}
+
+.feedback-form-heading {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 2px;
+  padding-bottom: 22px;
+}
+
+.feedback-form-heading h3 {
+  font-size: clamp(24px, 2.4vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.feedback-form-heading p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+  margin-top: 10px;
+}
+
+.feedback-row {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.feedback-form label {
+  color: rgba(255, 255, 255, 0.8);
+  display: grid;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 10px;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  outline: 0;
+  padding: 15px 16px;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+  width: 100%;
+}
+
+.feedback-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.feedback-form input:focus,
+.feedback-form textarea:focus {
+  border-color: rgba(255, 255, 255, 0.36);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
+}
+
+.feedback-form input::placeholder,
+.feedback-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.feedback-form button {
+  background: #f4f4f4;
+  border: 0;
+  border-radius: 999px;
+  color: #050505;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 800;
+  justify-self: start;
+  min-height: 50px;
+  padding: 0 24px;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.feedback-form button:hover {
+  transform: translateY(-1px);
+}
+
+.feedback-form button:disabled {
+  cursor: progress;
+  opacity: 0.72;
+  transform: none;
+}
+
+.feedback-success,
+.feedback-error {
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 12px 14px;
+}
+
+.feedback-success {
+  background: rgba(66, 211, 146, 0.1);
+  border: 1px solid rgba(66, 211, 146, 0.22);
+  color: #9bf1c9;
+}
+
+.feedback-error {
+  background: rgba(255, 92, 92, 0.1);
+  border: 1px solid rgba(255, 92, 92, 0.24);
+  color: #ffb4b4;
 }
 
 blockquote {
@@ -1466,6 +1596,7 @@ footer .brand {
   .feature-section,
   .next-gen,
   .case-studies,
+  .feedback,
   .faq,
   .integrations {
     padding-left: 22px;
@@ -1476,9 +1607,18 @@ footer .brand {
   .feature-grid,
   .product-row,
   .case-studies article,
+  .feedback,
   .integrations,
   footer {
     grid-template-columns: 1fr;
+  }
+
+  .feedback {
+    gap: 36px;
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding-bottom: 86px;
+    padding-top: 82px;
   }
 
   .core-card + .core-card,
@@ -1615,6 +1755,32 @@ footer .brand {
   .case-copy h3,
   blockquote {
     font-size: 36px;
+  }
+
+  .feedback-row {
+    grid-template-columns: 1fr;
+  }
+
+  .feedback-form {
+    border-radius: 20px;
+    padding: 20px;
+  }
+
+  .feedback-form button {
+    justify-self: stretch;
+  }
+
+  .feedback-copy h2 {
+    font-size: 38px;
+    line-height: 1.02;
+  }
+
+  .feedback-copy p {
+    font-size: 17px;
+  }
+
+  .feedback-badges {
+    margin-top: 26px;
   }
 
   .floating-ui {
