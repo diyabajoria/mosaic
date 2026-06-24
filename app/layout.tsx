@@ -4,8 +4,8 @@ import "./globals.css";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
-  title: "Mosaic | A MONO AI clone",
-  description: "A responsive Next.js clone of the MONO AI Framer landing page.",
+  title: "Mosaic",
+  description: "Mosaic converts Figma designs and natural-language prompts into production-ready frontend code.",
 };
 
 export default function RootLayout({

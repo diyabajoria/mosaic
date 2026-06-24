@@ -325,20 +325,28 @@ export default function Home() {
       </section>
 
  <section className="logos" id="about">
-  <p>they hate us coz they ain't us</p>
-  <h5>Powered By</h5>
+  
+  <h4>Powered By</h4>
 
   <div className="marquee-track">
     <div className="marquee-inner">
       {[
-        "Sarcasm",
-        "God complex",
-        "Cuteness",
-        "Humour",
-        "Sarcasm",
-        "God complex",
-        "Cuteness",
-        "Humour",
+        "Next.js",
+        "TypeScript",
+        "MongoDB",
+        "Gemini 3.5 Flash",
+        "Vercel",
+        "Lenis",
+        "Tailwind CSS",
+        "Bcryptjs",
+        "Next.js",
+        "TypeScript",
+        "MongoDB",
+        "Gemini 3.5 Flash",
+        "Vercel",
+        "Lenis",
+        "Tailwind CSS",
+        "Bcryptjs",
       ].map((logo, i) => (
         <span key={i}>
           {logo}
@@ -508,7 +516,7 @@ export default function Home() {
         ))}
       </div>
     </section>
-   <section className="developers" id="contact">
+<section className="developers" id="contact">
   <h2>Meet the Developers</h2>
 
   <div className="developers-grid">
@@ -517,12 +525,16 @@ export default function Home() {
         src="/images/diya.jpg"
         alt="Diya Bajoria"
         width={120}
-  height={120}
+        height={120}
         className="developer-avatar"
-      />  
+      />
 
       <h3>Diya Bajoria</h3>
-      <p>Shoe Chef</p>
+      <p className="developer-role">
+        <span className="pinky">does the pretty stuff</span>
+        <br />
+        <span>(Frontend & UI Design)</span>
+      </p>
 
       <div className="developer-links">
         <a
@@ -545,12 +557,18 @@ export default function Home() {
     <div className="developer-card">
       <img
         src="/images/vishal-vaibhav-profile.jpeg"
-        alt="Vishal"
+        alt="Vishal Vaibhav"
+        width={120}
+        height={120}
         className="developer-avatar"
       />
 
       <h3>Vishal Vaibhav</h3>
-      <p>Chief Chef</p>
+      <p className="developer-role">
+        <span className="pinky">does the scary stuff</span>
+        <br />
+        <span className="sub-role">(Backend & Systems Engineering)</span>
+      </p>
 
       <div className="developer-links">
         <a
@@ -571,7 +589,6 @@ export default function Home() {
     </div>
   </div>
 </section>
-
       <section className="cta" id="generate">
         <video aria-hidden="true" autoPlay muted loop playsInline src={heroVideo} />
         <h2>Ready to automate everything?</h2>
@@ -616,7 +633,7 @@ export default function Home() {
         </a>
       </div>
         
-        <p className="copyright">Made with ❤️ by Diya & Vishal</p>
+        <p className="copyright">They hate us 'cause they ain't us <br/> Peace. </p>
       </footer>
       
 

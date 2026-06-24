@@ -943,6 +943,7 @@ footer .brand {
   grid-column: 1 / -1;
   justify-self: center;
   padding-top: 40px;
+  text-align: center;
 }
 
 .copyright span {
@@ -1763,4 +1764,14 @@ footer .brand {
     grid-template-columns: 1fr;
     gap: 4rem;
   }
+}
+
+.pinky {
+  color: pink;
+  font-weight: 500;
+}
+
+.sub-role {
+  color: #888;
+  font-size: 0.9rem;
 }
