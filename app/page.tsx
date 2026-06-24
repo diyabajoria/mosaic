@@ -280,6 +280,24 @@ export default function Home() {
       const words = gsap.utils.toArray<HTMLElement>(".manifesto-word");
       const iconGroups = gsap.utils.toArray<SVGSVGElement>(".line-icon");
 
+      gsap.fromTo(
+        ".hero-load",
+        {
+          autoAlpha: 0,
+          y: 34,
+          filter: "blur(14px)",
+        },
+        {
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 1,
+          ease: "power3.out",
+          stagger: 0.16,
+          delay: 0.15,
+        },
+      );
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: manifestoRef.current,
@@ -396,11 +414,11 @@ export default function Home() {
         <video aria-hidden="true" autoPlay muted loop playsInline src={heroVideo} />
         <div className="hero-content">
           {/* <a className="pill" href="#">✦ Announcing API 2.0</a> */}
-          <h1>
+          <h1 className="hero-load">
             Your Figma deserves <em> better</em> than manual coding. 
           </h1>
-          <p>Generate clean, responsive frontend code directly from your Figma designs using AI-powered automation.</p>
-          <div className="actions">
+          <p className="hero-load">Generate clean, responsive frontend code directly from your Figma designs using AI-powered automation.</p>
+          <div className="actions hero-load">
             <Button href="/signup" onClick={() => setAuthMode("signup")}>Get started</Button>
             <Button href="/login" onClick={() => setAuthMode("login")} variant="ghost">Sign in</Button>
           </div>

@@ -185,6 +185,10 @@ footer a:hover {
   z-index: 1;
 }
 
+.hero-load {
+  will-change: opacity, transform, filter;
+}
+
 .pill,
 .kicker {
   align-items: center;
