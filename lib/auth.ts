@@ -84,6 +84,10 @@ export const authOptions: NextAuthOptions = {
       const fallbackUrl = `${baseUrl}/generate`;
 
       if (url.startsWith("/")) {
+        if (url === "/" || url.startsWith("/login") || url.startsWith("/signup")) {
+          return fallbackUrl;
+        }
+
         return `${baseUrl}${url}`;
       }
 
@@ -91,6 +95,10 @@ export const authOptions: NextAuthOptions = {
         const parsedUrl = new URL(url);
 
         if (parsedUrl.origin === baseUrl) {
+          if (parsedUrl.pathname === "/" || parsedUrl.pathname.startsWith("/login") || parsedUrl.pathname.startsWith("/signup")) {
+            return fallbackUrl;
+          }
+
           return url;
         }
       } catch {

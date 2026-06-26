@@ -56,7 +56,7 @@ const sacramento = Sacramento({
 function GenerateExperience() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const [figmaLink, setFigmaLink] = useState("");
   const [fileName, setFileName] = useState("");
   const [filePreview, setFilePreview] = useState("");
@@ -90,6 +90,12 @@ const [promptIndex, setPromptIndex] = useState(0);
   const creditsRemaining = credits ?? creditLimit;
   const creditsUsed = Math.max(0, creditLimit - creditsRemaining);
   const usagePercent = Math.min(100, Math.round((creditsUsed / creditLimit) * 100));
+
+  useEffect(() => {
+    if (sessionStatus === "unauthenticated") {
+      router.replace("/login?callbackUrl=/generate");
+    }
+  }, [router, sessionStatus]);
 
   useEffect(() => {
   if (figmaLink || isFigmaImportMode) return;
@@ -143,6 +149,10 @@ const [promptIndex, setPromptIndex] = useState(0);
   }, [filePreview]);
 
   useEffect(() => {
+    if (sessionStatus !== "authenticated") {
+      return;
+    }
+
     let isMounted = true;
 
     async function loadAccountData() {
@@ -178,7 +188,7 @@ const [promptIndex, setPromptIndex] = useState(0);
     return () => {
       isMounted = false;
     };
-  }, [session?.user]);
+  }, [session?.user, sessionStatus]);
 
   function handleGenerate() {
     const prompt = figmaLink.trim();

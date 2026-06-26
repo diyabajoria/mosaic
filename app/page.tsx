@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import gsap from "gsap";
@@ -262,6 +263,7 @@ function LineIcon({ type }: { type: string }) {
 }
 
 export default function Home() {
+  const router = useRouter();
   const manifestoRef = useRef<HTMLElement>(null);
   const [authMode, setAuthMode] = useState<"login" | "signup" | null>(null);
   const [feedbackName, setFeedbackName] = useState("");
@@ -272,6 +274,12 @@ export default function Home() {
   const [isSendingFeedback, setIsSendingFeedback] = useState(false);
 
   const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.user) {
+      router.replace("/generate");
+    }
+  }, [router, session?.user, status]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
