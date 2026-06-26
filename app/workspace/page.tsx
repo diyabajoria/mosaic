@@ -75,6 +75,7 @@ type ChatMessage = {
   id: string;
   role: "user" | "assistant";
   text: string;
+  agentRun?: AgentRun;
 };
 
 type ActivityState = "thinking" | "planning" | "generating" | "editing_file" | "fixing" | "completed";
@@ -86,6 +87,22 @@ type ActivityStep = {
 
 type WorkspaceTab = "preview" | "code";
 type BuildMode = "build" | "plan";
+type AgentRunState = "idle" | "running" | "completed" | "failed";
+
+type FileChange = {
+  path: string;
+  action: "created" | "edited";
+};
+
+type AgentRun = {
+  runState: AgentRunState;
+  statusSteps: string[];
+  activeStepIndex: number;
+  startedAt: number;
+  completedAt?: number;
+  filesChanged?: FileChange[];
+  finalMessage?: string;
+};
 
 type PreviewPage = {
   label: string;
@@ -159,6 +176,7 @@ export default function WorkspacePage() {
   const [referenceImage, setReferenceImage] = useState<ReferenceImage | null>(null);
   const [statusMessage, setStatusMessage] = useState("");
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [agentClock, setAgentClock] = useState(Date.now());
   const [isProjectMenuOpen, setIsProjectMenuOpen] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
   const [creditLimit, setCreditLimit] = useState(DEFAULT_CREDIT_LIMIT);
@@ -242,7 +260,16 @@ export default function WorkspacePage() {
 
   useEffect(() => {
     chatMessagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [chatMessages, generationUpdateIndex, isGenerating]);
+  }, [chatMessages, generationUpdateIndex, isGenerating, agentClock]);
+
+  useEffect(() => {
+    if (!isGenerating) {
+      return;
+    }
+
+    const timer = window.setInterval(() => setAgentClock(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, [isGenerating]);
 
   useEffect(() => {
     if (!isGenerating) {
@@ -259,6 +286,26 @@ export default function WorkspacePage() {
 
     return () => window.clearInterval(timer);
   }, [generationUpdates.length, isGenerating]);
+
+  useEffect(() => {
+    if (!isGenerating) {
+      return;
+    }
+
+    setChatMessages((messages) =>
+      messages.map((message) =>
+        message.agentRun?.runState === "running"
+          ? {
+              ...message,
+              agentRun: {
+                ...message.agentRun,
+                activeStepIndex: Math.min(generationUpdateIndex, message.agentRun.statusSteps.length - 1),
+              },
+            }
+          : message,
+      ),
+    );
+  }, [generationUpdateIndex, isGenerating]);
 
   useEffect(() => {
     function closeProjectMenu(event: MouseEvent) {
@@ -340,7 +387,8 @@ export default function WorkspacePage() {
     }
 
     const requestId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    const nextGenerationUpdates = createGenerationUpdates(cleanPrompt, options.referenceImage);
+    const nextGenerationUpdates = createGenerationUpdates(cleanPrompt, options.referenceImage, Boolean(currentGenerationContext));
+    const runMessageId = `${requestId}-agent`;
     activeRequestRef.current = requestId;
     setIsGenerating(true);
     setGenerationUpdateIndex(0);
@@ -366,12 +414,26 @@ export default function WorkspacePage() {
             },
           ]
         : []),
+      {
+        id: runMessageId,
+        role: "assistant",
+        text: "",
+        agentRun: {
+          runState: "running",
+          statusSteps: nextGenerationUpdates.map((step) => step.label),
+          activeStepIndex: 0,
+          startedAt: Date.now(),
+        },
+      },
     ]);
 
     try {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 45000);
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           figmaLink: options.figmaLink ?? (cleanPrompt.includes("figma.com") ? cleanPrompt : undefined),
           referenceImage: options.referenceImage ?? undefined,
@@ -379,10 +441,12 @@ export default function WorkspacePage() {
           prompt: cleanPrompt,
         }),
       });
+      window.clearTimeout(timeout);
 
       const payload = (await response.json().catch(() => null)) as {
         generation?: Omit<Generation, "prompt">;
         generationId?: string;
+        filesChanged?: FileChange[];
         creditsRemaining?: number;
         creditLimit?: number;
         error?: string;
@@ -414,17 +478,30 @@ export default function WorkspacePage() {
         setCreditLimit(payload.creditLimit);
       }
       setIsGenerating(false);
+      const finalMessage = currentGenerationContext ? `Done - I updated "${nextGeneration.title}" with your requested change.${
+        typeof payload.creditsRemaining === "number" ? ` You have ${payload.creditsRemaining} credits left.` : ""
+      }` : `Done - I built "${nextGeneration.title}" as a React + Tailwind project.${
+        typeof payload.creditsRemaining === "number" ? ` You have ${payload.creditsRemaining} credits left.` : ""
+      } You can preview it, inspect files, or download the ZIP.`;
+      const filesChanged = payload.filesChanged?.length ? payload.filesChanged : getKnownFileChanges(nextGeneration.files, currentGenerationContext?.files ?? []);
+
       setChatMessages((messages) => [
-        ...messages,
-        {
-          id: `${requestId}-done`,
-          role: "assistant",
-          text: currentGenerationContext ? `Done - I updated "${nextGeneration.title}" with your requested change.${
-            typeof payload.creditsRemaining === "number" ? ` You have ${payload.creditsRemaining} credits left.` : ""
-          }` : `Done - I built "${nextGeneration.title}" as a React + Tailwind project.${
-            typeof payload.creditsRemaining === "number" ? ` You have ${payload.creditsRemaining} credits left.` : ""
-          } You can preview it, inspect files, or download the ZIP.`,
-        },
+        ...messages.map((message) =>
+          message.id === runMessageId && message.agentRun
+            ? {
+                ...message,
+                text: finalMessage,
+                agentRun: {
+                  ...message.agentRun,
+                  runState: "completed" as const,
+                  activeStepIndex: message.agentRun.statusSteps.length - 1,
+                  completedAt: Date.now(),
+                  filesChanged,
+                  finalMessage,
+                },
+              }
+            : message,
+        ),
       ]);
     } catch (error) {
       if (activeRequestRef.current !== requestId) {
@@ -440,12 +517,21 @@ export default function WorkspacePage() {
       setStatusMessage(message);
       setIsGenerating(false);
       setChatMessages((messages) => [
-        ...messages,
-        {
-          id: `${requestId}-error`,
-          role: "assistant",
-          text: `I hit a problem while generating: ${message}`,
-        },
+        ...messages.map((chatMessage) =>
+          chatMessage.id === runMessageId && chatMessage.agentRun
+            ? {
+                ...chatMessage,
+                text: `I hit a problem while generating: ${message}`,
+                agentRun: {
+                  ...chatMessage.agentRun,
+                  runState: "failed" as const,
+                  activeStepIndex: Math.min(generationUpdateIndex, chatMessage.agentRun.statusSteps.length - 1),
+                  completedAt: Date.now(),
+                  finalMessage: `I hit a problem while generating: ${message}`,
+                },
+              }
+            : chatMessage,
+        ),
       ]);
     } finally {
       if (activeRequestRef.current === requestId) {
@@ -764,9 +850,13 @@ export default function WorkspacePage() {
                   {message.role === "assistant" ? <Bot size={15} /> : <UserRound size={15} />}
                 </span>
                 <div className="workspace-message-content">
-                  <p>
-                    <TypewriterText animate={message.role === "assistant"} text={message.text} />
-                  </p>
+                  {message.agentRun ? (
+                    <AgentRunMessage agentRun={message.agentRun} now={agentClock} />
+                  ) : (
+                    <p>
+                      <TypewriterText animate={message.role === "assistant"} text={message.text} />
+                    </p>
+                  )}
                   <MessageActions
                     messageRole={message.role}
                     onCopy={() => void copyChatMessage(message.text)}
@@ -775,23 +865,6 @@ export default function WorkspacePage() {
                 </div>
               </div>
             ))}
-            {isGenerating && (
-              <div className="workspace-message assistant">
-                <span className="workspace-message-avatar" aria-hidden="true">
-                  <Loader2 className="workspace-spin" size={15} />
-                </span>
-                <div className="workspace-message-content">
-                  <p className="workspace-ai-loading-text">
-                    {generationUpdates[generationUpdateIndex]?.label ?? "Working on your request..."}
-                  </p>
-                  <MessageActions
-                    messageRole="assistant"
-                    onCopy={() => void copyChatMessage(generationUpdates[generationUpdateIndex]?.label ?? "Mosaic is working.")}
-                    onSecondaryAction={(label) => setStatusMessage(`${label} noted.`)}
-                  />
-                </div>
-              </div>
-            )}
             <div ref={chatMessagesEndRef} />
           </div>
 
@@ -1110,6 +1183,89 @@ export default function WorkspacePage() {
   );
 }
 
+function AgentRunMessage({ agentRun, now }: { agentRun: AgentRun; now: number }) {
+  const visibleSteps =
+    agentRun.runState === "running"
+      ? agentRun.statusSteps.slice(0, Math.max(1, agentRun.activeStepIndex + 1))
+      : agentRun.statusSteps;
+
+  return (
+    <div className={`workspace-agent-run ${agentRun.runState}`}>
+      <div className="workspace-agent-run-head">
+        <div>
+          <span className="workspace-agent-kicker">Mosaic agent</span>
+          <strong>{agentRun.runState === "running" ? "Working on your request" : agentRun.runState === "failed" ? "Run stopped" : "Run complete"}</strong>
+        </div>
+        <AgentTimer agentRun={agentRun} now={now} />
+      </div>
+
+      <AgentStepTimeline activeStepIndex={agentRun.activeStepIndex} runState={agentRun.runState} steps={visibleSteps} />
+
+      {agentRun.filesChanged?.length ? <FilesChangedList filesChanged={agentRun.filesChanged} /> : null}
+
+      {agentRun.finalMessage ? (
+        <p className="workspace-agent-final">
+          <TypewriterText animate text={agentRun.finalMessage} />
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function AgentTimer({ agentRun, now }: { agentRun: AgentRun; now: number }) {
+  const endTime = agentRun.completedAt ?? now;
+  const label = agentRun.runState === "running" ? "Working for" : agentRun.runState === "failed" ? "Stopped after" : "Completed in";
+
+  return (
+    <span className="workspace-agent-timer">
+      {label} {formatElapsedTime(Math.max(0, endTime - agentRun.startedAt))}
+    </span>
+  );
+}
+
+function AgentStepTimeline({
+  activeStepIndex,
+  runState,
+  steps,
+}: {
+  activeStepIndex: number;
+  runState: AgentRunState;
+  steps: string[];
+}) {
+  return (
+    <ol className="workspace-agent-steps">
+      {steps.map((step, index) => {
+        const state = getAgentStepState(index, activeStepIndex, runState, steps.length);
+
+        return (
+          <li className={state} key={`${step}-${index}`}>
+            <span className="workspace-agent-step-icon" aria-hidden="true">
+              {state === "completed" ? <Check size={12} /> : state === "active" ? <span /> : null}
+            </span>
+            <span>{step}</span>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function FilesChangedList({ filesChanged }: { filesChanged: FileChange[] }) {
+  return (
+    <section className="workspace-agent-files" aria-label="Files changed">
+      <h3>Files changed</h3>
+      <ul>
+        {filesChanged.map((file) => (
+          <li key={`${file.action}-${file.path}`}>
+            <span>{file.action}</span>
+            <code>{file.path}</code>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function MessageActions({
   messageRole,
   onCopy,
@@ -1145,6 +1301,34 @@ function MessageActions({
       </button>
     </div>
   );
+}
+
+function getAgentStepState(index: number, activeStepIndex: number, runState: AgentRunState, totalSteps: number) {
+  if (runState === "failed" && index === activeStepIndex) {
+    return "failed";
+  }
+
+  if (runState === "failed") {
+    return index < activeStepIndex ? "completed" : "pending";
+  }
+
+  if (runState === "completed" || index < activeStepIndex || (runState !== "running" && index === totalSteps - 1)) {
+    return "completed";
+  }
+
+  if (index === activeStepIndex) {
+    return "active";
+  }
+
+  return "pending";
+}
+
+function formatElapsedTime(ms: number) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
 function TypewriterText({ animate = true, text }: { animate?: boolean; text: string }) {
@@ -1345,25 +1529,26 @@ function createLoadingGeneration(prompt: string): Generation {
   };
 }
 
-function createGenerationUpdates(prompt: string, referenceImage?: ReferenceImage | null): ActivityStep[] {
+function createGenerationUpdates(prompt: string, referenceImage?: ReferenceImage | null, isFollowUp = false): ActivityStep[] {
   const lowerPrompt = prompt.toLowerCase();
   const subject = summarizePromptSubject(prompt);
   const steps: ActivityStep[] = [];
-  const isEdit = matchesPrompt(lowerPrompt, [
-    "change",
-    "rename",
-    "replace",
-    "update",
-    "make ",
-    "increase",
-    "decrease",
-    "remove",
-    "add",
-    "fix",
-    "adjust",
-  ]);
+  const isEdit =
+    isFollowUp &&
+    matchesPrompt(lowerPrompt, [
+      "change",
+      "rename",
+      "replace",
+      "update",
+      "increase",
+      "decrease",
+      "remove",
+      "add",
+      "fix",
+      "adjust",
+    ]);
 
-  steps.push({ state: "thinking", label: isEdit ? `Reading your edit: ${truncateActivityLabel(prompt)}` : `Reading your request: ${truncateActivityLabel(prompt)}` });
+  steps.push({ state: "thinking", label: isEdit ? `Reading your edit: ${truncateActivityLabel(prompt)}` : `Analyzing prompt: ${truncateActivityLabel(prompt)}` });
 
   if (referenceImage) {
     steps.push({ state: "thinking", label: `Checking ${referenceImage.name} for visual guidance...` });
@@ -1430,6 +1615,11 @@ function createGenerationUpdates(prompt: string, referenceImage?: ReferenceImage
     return steps;
   }
 
+  steps.push(
+    { state: "planning", label: "Matching a design pattern..." },
+    { state: "planning", label: "Building an enhanced design brief..." },
+  );
+
   if (matchesPrompt(lowerPrompt, ["clone", "copy", "replica", "same as", "reference", "figma"])) {
     steps.push(
       { state: "planning", label: "Mapping the reference into reusable React sections..." },
@@ -1476,9 +1666,10 @@ function createGenerationUpdates(prompt: string, referenceImage?: ReferenceImage
     { state: "generating", label: "Creating React components..." },
     { state: "editing_file", label: "Editing src/App.jsx..." },
     { state: "editing_file", label: "Generating Tailwind styles..." },
-    { state: "fixing", label: "Fixing responsive layout..." },
+    { state: "fixing", label: "Validating UI quality..." },
+    { state: "fixing", label: "Improving result if needed..." },
     { state: "fixing", label: `Polishing ${subject} before the preview updates...` },
-    { state: "completed", label: "Build complete." },
+    { state: "completed", label: "Preview ready." },
   );
 
   return steps;
@@ -1534,6 +1725,26 @@ function normalizeGeneration(generation: Generation): Generation {
     previewJs: generation.previewJs ?? "",
     notes: generation.notes ?? [],
   };
+}
+
+function getKnownFileChanges(nextFiles: GeneratedFile[], previousFiles: GeneratedFile[]): FileChange[] {
+  const previousByPath = new Map(previousFiles.map((file) => [file.path, file.content]));
+
+  return nextFiles
+    .map((file) => {
+      const previousContent = previousByPath.get(file.path);
+
+      if (previousContent === undefined) {
+        return { path: file.path, action: "created" as const };
+      }
+
+      if (previousContent !== file.content) {
+        return { path: file.path, action: "edited" as const };
+      }
+
+      return null;
+    })
+    .filter((fileChange): fileChange is FileChange => Boolean(fileChange));
 }
 
 function createGenerationContext(generation: Generation): GenerationContext | undefined {
