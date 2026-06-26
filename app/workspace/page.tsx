@@ -429,7 +429,7 @@ export default function WorkspacePage() {
 
     try {
       const controller = new AbortController();
-      const timeout = window.setTimeout(() => controller.abort(), 45000);
+      const timeout = window.setTimeout(() => controller.abort(), 150000);
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -508,7 +508,14 @@ export default function WorkspacePage() {
         return;
       }
 
-      const message = error instanceof Error ? error.message : "Something went wrong.";
+      const message =
+        error instanceof DOMException && error.name === "AbortError"
+          ? "Generation took too long. Please try again."
+          : error instanceof Error && /aborted|abort/i.test(error.message)
+            ? "Generation took too long. Please try again."
+            : error instanceof Error
+              ? error.message
+              : "Something went wrong.";
       if (!currentGenerationContext) {
         setGeneration(emptyGeneration);
         setSelectedFilePath(emptyGeneration.files[0]?.path ?? "");
@@ -1616,8 +1623,8 @@ function createGenerationUpdates(prompt: string, referenceImage?: ReferenceImage
   }
 
   steps.push(
-    { state: "planning", label: "Matching a design pattern..." },
-    { state: "planning", label: "Building an enhanced design brief..." },
+    { state: "planning", label: "Understanding the product and audience..." },
+    { state: "planning", label: "Writing a focused build brief for the AI..." },
   );
 
   if (matchesPrompt(lowerPrompt, ["clone", "copy", "replica", "same as", "reference", "figma"])) {

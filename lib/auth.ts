@@ -80,6 +80,25 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      const fallbackUrl = `${baseUrl}/generate`;
+
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+
+      try {
+        const parsedUrl = new URL(url);
+
+        if (parsedUrl.origin === baseUrl) {
+          return url;
+        }
+      } catch {
+        return fallbackUrl;
+      }
+
+      return fallbackUrl;
+    },
     async jwt({ token, user, profile }) {
       const providerImage =
         profile && "picture" in profile && typeof profile.picture === "string"

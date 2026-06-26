@@ -90,120 +90,22 @@ Internal design checklist before returning:
 
 Never generate plain white pages with random boxes, empty cards, unstyled navbars, misaligned sections, placeholder-only text, huge blank spaces, unfinished sections, or single-color rectangles pretending to be components.`;
 
-const TEMPLATE_PATTERNS: TemplatePattern[] = [
-  {
-    id: "premium-saas-landing",
-    type: "saas-landing",
-    style: ["startup", "premium", "minimal"],
-    sections: ["navbar", "hero", "logo-cloud", "feature-grid", "workflow", "pricing", "testimonials", "faq", "footer"],
-    designNotes: "Modern SaaS page with crisp typography, layered product mockup, proof points, and conversion-focused sections.",
-    layoutRules: "Use max-w-7xl containers, a split hero with product preview, 3-column feature cards, pricing cards, and responsive stacking.",
-    qualityRules: "No generic startup buzzwords; use realistic product copy, clear CTAs, populated cards, hover states, and a footer.",
-  },
-  {
-    id: "ai-tool-landing",
-    type: "ai-tool-landing",
-    style: ["futuristic", "glassmorphism", "premium"],
-    sections: ["navbar", "hero", "prompt-console", "capabilities", "workflow", "use-cases", "pricing", "footer"],
-    designNotes: "Premium AI tool landing page with a prompt console, generated output cards, and luminous but restrained surfaces.",
-    layoutRules: "Use dark surfaces, glass panels, subtle gradients, tabular examples, and responsive cards.",
-    qualityRules: "Show realistic AI workflows and outputs; avoid empty glowing boxes.",
-  },
-  {
-    id: "premium-fashion-landing",
-    type: "fashion-ecommerce",
-    style: ["luxury", "minimal", "editorial"],
-    sections: ["navbar", "hero", "collections", "product-grid", "lookbook", "story", "testimonials", "newsletter", "footer"],
-    designNotes: "Editorial fashion brand experience with refined typography, warm neutral palette, tactile product cards, and lookbook composition.",
-    layoutRules: "Use a luxury hero, collection cards, 6 product cards, an editorial lookbook grid, quote section, newsletter, and footer.",
-    qualityRules: "Every product card needs a name, price, description, image-like gradient, and hover/action state.",
-  },
-  {
-    id: "restaurant-cafe-editorial",
-    type: "restaurant-cafe",
-    style: ["warm", "editorial", "hospitality"],
-    sections: ["navbar", "hero", "hours-card", "features", "menu-grid", "interior-story", "quote", "newsletter", "footer"],
-    designNotes: "Warm cafe/restaurant page with hospitality copy, menu items, opening hours, location cues, and rich editorial sections.",
-    layoutRules: "Use warm dark or cream palette, large serif hero, menu cards, visit information, image-like gradient panels, and responsive layout.",
-    qualityRules: "Do not show a blank restaurant page; include at least 6 menu items and clear visit/reservation CTAs.",
-  },
-  {
-    id: "portfolio-editorial",
-    type: "portfolio",
-    style: ["editorial", "minimal", "personal"],
-    sections: ["navbar", "hero", "selected-work", "services", "process", "testimonials", "contact", "footer"],
-    designNotes: "Personal portfolio with strong identity, case-study cards, services, process notes, and contact CTA.",
-    layoutRules: "Use large editorial type, project cards, skill tags, and a confident contact section.",
-    qualityRules: "Avoid resume-only layouts; include real case-study style content.",
-  },
-  {
-    id: "agency-showcase",
-    type: "agency",
-    style: ["bold", "creative", "premium"],
-    sections: ["navbar", "hero", "services", "case-studies", "process", "team", "contact", "footer"],
-    designNotes: "Creative agency site with bold type, case studies, service cards, and process storytelling.",
-    layoutRules: "Use asymmetric sections, strong imagery placeholders, and repeated case-study cards.",
-    qualityRules: "No generic agency cards; make services and work examples specific.",
-  },
-  {
-    id: "youtube-style-dashboard",
-    type: "video-platform-dashboard",
-    style: ["modern", "dashboard", "media"],
-    sections: ["topbar", "sidebar", "category-tabs", "featured-player", "video-grid", "video-card", "shorts-row"],
-    designNotes: "YouTube-inspired media dashboard with dense browsing UI, search, sidebar, chips, video thumbnails, and metadata.",
-    layoutRules: "Use sticky topbar, left sidebar, horizontal chips, at least 12 video cards, thumbnail gradients, duration badges, avatars, views, and upload time.",
-    qualityRules: "Never return one video card; the interface must feel like a real video platform.",
-  },
-  {
-    id: "twitter-social-feed",
-    type: "social-feed",
-    style: ["dark", "social", "dense"],
-    sections: ["sidebar", "timeline", "composer", "trends", "who-to-follow", "mobile-tabs"],
-    designNotes: "Twitter/X-style feed with timeline density, composer, engagement metadata, trends, and follow suggestions.",
-    layoutRules: "Use three-column desktop layout and single-column mobile feed.",
-    qualityRules: "Include realistic posts, handles, engagement stats, and populated side panels.",
-  },
-  {
-    id: "airbnb-marketplace",
-    type: "marketplace",
-    style: ["clean", "travel", "marketplace"],
-    sections: ["navbar", "search-bar", "category-filters", "listing-grid", "map-preview", "host-cta", "footer"],
-    designNotes: "Airbnb-style marketplace with search, category chips, destination cards, pricing, ratings, and host CTA.",
-    layoutRules: "Use card grid with image-like placeholders, ratings, locations, prices, and responsive filters.",
-    qualityRules: "At least 8 listings with real travel-style content.",
-  },
-  {
-    id: "fintech-landing",
-    type: "fintech-landing",
-    style: ["trustworthy", "premium", "data"],
-    sections: ["navbar", "hero", "stats", "product-preview", "security", "features", "testimonials", "footer"],
-    designNotes: "Fintech landing page with trust cues, metrics, security, product cards, and polished financial copy.",
-    layoutRules: "Use strong contrast, data cards, account mockup, and compliance/security sections.",
-    qualityRules: "No vague money copy; include realistic metrics and trust signals.",
-  },
-  {
-    id: "mobile-app-landing",
-    type: "mobile-app-landing",
-    style: ["consumer", "polished", "playful"],
-    sections: ["navbar", "hero", "phone-mockup", "features", "screens", "reviews", "download-cta", "footer"],
-    designNotes: "Mobile app landing page with phone mockups, feature cards, screen previews, reviews, and store CTAs.",
-    layoutRules: "Use large phone-like panels, app feature sections, and responsive stacked mobile layout.",
-    qualityRules: "The app benefit must be obvious from the first screen.",
-  },
-  {
-    id: "admin-dashboard",
-    type: "admin-dashboard",
-    style: ["operational", "dense", "dark"],
-    sections: ["sidebar", "topbar", "metrics", "chart", "activity", "table", "filters"],
-    designNotes: "Admin dashboard with metrics, CSS charts, activity feed, table rows, filters, and clear hierarchy.",
-    layoutRules: "Use dashboard grid, sticky sidebar, top controls, cards, chart-like divs, and responsive collapse.",
-    qualityRules: "At least 4 metrics, 1 chart, 1 activity feed, and 1 populated table.",
-  },
-];
+const PREMIUM_OUTPUT_REQUIREMENTS = `PREMIUM OUTPUT REQUIREMENTS:
+- Generate a finished product experience, not a sketch, wireframe, starter screen, or tutorial mockup.
+- The first viewport must look impressive immediately and fill the available preview area.
+- Use a real visual system: deliberate background, surfaces, borders, shadows, accent color, type scale, spacing rhythm, and hover states.
+- Use domain-specific content. Never use generic labels like "Video Title", "Product Name", "Card title", "Feature one", or lorem ipsum.
+- Include enough repeated realistic items to feel real: feeds need many posts, video apps need many video cards, stores need many products, dashboards need many metrics/rows, landing pages need complete sections.
+- Avoid tiny demos with one card, one section, one centered panel, or lots of empty whitespace.
+- Preview markup must be rich enough to judge the result without running React.
+- React output and preview output must visually match.
+- Prefer tasteful density over sparse emptiness. Use layered sections, split layouts, sidebars, tabs, chips, tables, cards, mockups, and data where appropriate.
+- Use responsive layouts that meaningfully change on mobile instead of just shrinking desktop.
+- Keep code clean, but prioritize visual completeness and prompt accuracy.`;
 
 const geminiFallbackModels = ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
 const maxAiAttemptsPerModel = 1;
-const aiRequestTimeoutMs = 20000;
+const aiRequestTimeoutMs = 120000;
 
 type AiProvider = "gemini" | "openrouter";
 type WebsiteType =
@@ -230,15 +132,6 @@ type PromptAnalysis = {
   cloneIntent: string;
 };
 
-type TemplatePattern = {
-  id: string;
-  type: WebsiteType;
-  style: string[];
-  sections: string[];
-  designNotes: string;
-  layoutRules: string;
-  qualityRules: string;
-};
 
 type GeminiResponse = {
   candidates?: Array<{
@@ -302,46 +195,22 @@ export async function POST(request: Request) {
   }
 
   try {
-    let usedFallback = false;
-    let result: z.infer<typeof generationSchema>;
-
-    if (shouldUseImmediateTemplate(parsed.data.prompt, parsed.data.currentGeneration)) {
-      result = createPromptFallbackGeneration(parsed.data.prompt);
-      usedFallback = true;
-    } else {
-      try {
-        result = enforceGenerationQuality(
-          parsed.data.prompt,
-          await generateWithAi({
-            provider,
-            apiKey,
-            figmaLink: parsed.data.figmaLink,
-            prompt: parsed.data.prompt,
-            referenceImage: parsed.data.referenceImage,
-            currentGeneration: parsed.data.currentGeneration,
-          }),
-        );
-      } catch (error) {
-        console.warn(`[Mosaic generation] AI generation failed, using deterministic fallback: ${error instanceof Error ? error.message : "Unknown error."}`);
-        result = createPromptFallbackGeneration(parsed.data.prompt);
-        usedFallback = true;
-      }
-    }
+    const result = enforceGenerationQuality(
+      parsed.data.prompt,
+      await generateWithAi({
+        provider,
+        apiKey,
+        figmaLink: parsed.data.figmaLink,
+        prompt: parsed.data.prompt,
+        referenceImage: parsed.data.referenceImage,
+        currentGeneration: parsed.data.currentGeneration,
+      }),
+    );
 
     const qualityIssues = validateGeneratedQuality(parsed.data.prompt, result);
 
-    if (qualityIssues.length && !usedFallback && !isDeterministicQualityTemplate(result)) {
-      result = await improveGenerationQuality({
-        provider,
-        apiKey,
-        originalPrompt: parsed.data.prompt,
-        issues: qualityIssues,
-        generation: result,
-      }).catch((error) => {
-        console.warn(`[Mosaic generation] quality improvement pass failed: ${error instanceof Error ? error.message : "Unknown error."}`);
-        return result;
-      });
-      result = enforceGenerationQuality(parsed.data.prompt, result);
+    if (qualityIssues.length) {
+      console.warn(`[Mosaic generation] generated UI quality warnings: ${qualityIssues.join("; ")}`);
     }
 
     const now = new Date();
@@ -412,16 +281,6 @@ function getFileChanges(nextFiles: z.infer<typeof generationSchema>["files"], pr
 }
 
 function enforceGenerationQuality(prompt: string, generation: z.infer<typeof generationSchema>) {
-  if (isYouTubeClonePrompt(prompt) && !isAcceptableYouTubeClone(generation)) {
-    console.warn("[Mosaic generation] YouTube clone output was too shallow; using deterministic YouTube clone template.");
-    return createYouTubeCloneGeneration();
-  }
-
-  if (isFashionBrandPrompt(prompt) && !isAcceptableFashionGeneration(generation)) {
-    console.warn("[Mosaic generation] fashion ecommerce output was too shallow; using deterministic premium fashion template.");
-    return createFashionBrandGeneration(prompt);
-  }
-
   const qualityIssues = validateGeneratedQuality(prompt, generation);
 
   if (qualityIssues.length) {
@@ -431,535 +290,28 @@ function enforceGenerationQuality(prompt: string, generation: z.infer<typeof gen
   return generation;
 }
 
-function shouldUseImmediateTemplate(prompt: string, currentGeneration?: z.infer<typeof requestSchema>["currentGeneration"]) {
-  return !currentGeneration;
-}
-
-function createPromptFallbackGeneration(prompt: string): z.infer<typeof generationSchema> {
-  if (isYouTubeClonePrompt(prompt)) return createYouTubeCloneGeneration();
-  if (isFashionBrandPrompt(prompt)) return createFashionBrandGeneration(prompt);
-  if (isCafePrompt(prompt)) return createCafeGeneration(prompt);
-  if (isAiChatPrompt(prompt)) return createAiChatGeneration(prompt);
-  return createGenericPremiumGeneration(prompt);
-}
-
-function isYouTubeClonePrompt(prompt: string) {
-  const normalizedPrompt = prompt.toLowerCase();
-  return normalizedPrompt.includes("youtube") && normalizedPrompt.includes("clone");
-}
-
-function isCafePrompt(prompt: string) {
-  return /cafe|coffee|restaurant|bistro|bakery|brunch|diner|food|menu/i.test(prompt);
-}
-
-function isAiChatPrompt(prompt: string) {
-  return /ai chat|chat interface|chatbot|assistant|ai assistant|chat app|messaging interface/i.test(prompt);
-}
-
-function isAcceptableYouTubeClone(generation: z.infer<typeof generationSchema>) {
-  const content = `${generation.title} ${generation.summary} ${generation.previewHtml} ${generation.previewCss} ${generation.files.map((file) => `${file.path} ${file.content}`).join(" ")}`.toLowerCase();
-  const videoCardCount = (content.match(/video-card|video card|thumbnail|duration|views|channel/g) ?? []).length;
-  const hasCoreLayout = ["sidebar", "search", "subscriptions", "shorts", "category", "grid"].every((term) => content.includes(term));
-  const hasEnoughDensity = generation.previewHtml.length > 4500 && videoCardCount >= 12;
-
-  return hasCoreLayout && hasEnoughDensity;
-}
-
-function isFashionBrandPrompt(prompt: string) {
-  return /clothing|fashion|apparel|streetwear|boutique|wear|garment|collection/i.test(prompt);
-}
-
-function isAcceptableFashionGeneration(generation: z.infer<typeof generationSchema>) {
-  const content = `${generation.title} ${generation.summary} ${generation.previewHtml} ${generation.previewCss} ${generation.files.map((file) => `${file.path} ${file.content}`).join(" ")}`.toLowerCase();
-  const productSignals = (content.match(/product|collection|lookbook|editorial|newsletter|testimonial|atelier|fabric|price|shop/g) ?? []).length;
-  const hasCoreLayout = ["hero", "collection", "product", "newsletter", "footer"].every((term) => content.includes(term));
-  const hasEnoughDensity = generation.previewHtml.length > 4200 && productSignals >= 10;
-
-  return hasCoreLayout && hasEnoughDensity;
-}
-
 function validateGeneratedQuality(prompt: string, generation: z.infer<typeof generationSchema>) {
   const content = `${generation.previewHtml} ${generation.previewCss} ${generation.files.map((file) => file.content).join(" ")}`.toLowerCase();
   const issues: string[] = [];
   const sectionCount = (content.match(/<section|section class|function [a-z0-9]+section|const [a-z0-9]+section/gi) ?? []).length;
   const cardSignals = (content.match(/card|article|grid|thumbnail|product|metric|testimonial/g) ?? []).length;
+  const repeatedItemSignals = (content.match(/article|post|tweet|video|product|row|metric|testimonial|card|item/g) ?? []).length;
   const hasResponsiveClasses = /\b(sm|md|lg|xl|2xl):/.test(content) || /@media\s*\(/.test(content);
   const hasStyledButton = /button|rounded-full|hover:|transition/.test(content);
   const hasNavigation = /<nav|navitems|navbar|sidebar|topbar|header/.test(content);
-  const hasFooterWhenWebsite = /clone|dashboard|app interface/i.test(prompt) || /footer/.test(content);
   const hasPlaceholderOnlyText = /video title|lorem ipsum|placeholder|card title|product name/i.test(content);
+  const isComplexPrompt = /clone|dashboard|analytics|social|video|youtube|twitter|facebook|ecommerce|store|shop|marketplace|app/i.test(prompt);
 
   if (sectionCount < 4 && !/clone|dashboard|app interface/i.test(prompt)) issues.push("too few meaningful sections");
-  if (/clone|dashboard|analytics|social|video/i.test(prompt) && cardSignals < 6) issues.push("too few repeated cards/items");
+  if (isComplexPrompt && cardSignals < 10) issues.push("too few repeated cards/items");
+  if (isComplexPrompt && repeatedItemSignals < 12) issues.push("too little realistic repeated content");
   if (!hasResponsiveClasses) issues.push("missing responsive Tailwind/media classes");
   if (!hasStyledButton) issues.push("buttons or interactions are under-styled");
   if (!hasNavigation) issues.push("navigation is missing or weak");
-  if (!hasFooterWhenWebsite) issues.push("website footer is missing");
   if (hasPlaceholderOnlyText) issues.push("placeholder-only copy detected");
-  if (generation.previewHtml.length < 1800 || generation.previewCss.length < 1200) issues.push("preview is too small/basic");
+  if (generation.previewHtml.length < 4500 || generation.previewCss.length < 2200) issues.push("preview is too small/basic");
 
   return issues;
-}
-
-function createYouTubeCloneGeneration(): z.infer<typeof generationSchema> {
-  const videos = [
-    { title: "Building a cinematic desk setup from scratch", channel: "Studio Desk", views: "1.2M views", age: "3 days ago", duration: "12:48", accent: "from-zinc-700 via-zinc-900 to-red-950" },
-    { title: "I rebuilt my entire React workflow", channel: "Frontend Lab", views: "486K views", age: "1 week ago", duration: "24:10", accent: "from-slate-700 via-zinc-900 to-blue-950" },
-    { title: "The creator economy tools nobody talks about", channel: "Signal Media", views: "92K views", age: "18 hours ago", duration: "18:32", accent: "from-stone-700 via-zinc-900 to-purple-950" },
-    { title: "Minimal home studio tour for 2026", channel: "Creator Space", views: "775K views", age: "6 days ago", duration: "21:17", accent: "from-neutral-700 via-zinc-900 to-emerald-950" },
-    { title: "AI workflows that actually save time", channel: "Ops Weekly", views: "137K views", age: "3 days ago", duration: "15:09", accent: "from-zinc-700 via-black to-cyan-950" },
-    { title: "Designing thumbnails people actually click", channel: "Northline Films", views: "604K views", age: "4 days ago", duration: "9:41", accent: "from-gray-700 via-zinc-950 to-orange-950" },
-    { title: "Live coding a production dashboard UI", channel: "Code Room", views: "318K views", age: "2 days ago", duration: "31:08", accent: "from-zinc-700 via-stone-950 to-sky-950" },
-    { title: "Why every video platform feels the same", channel: "UX Review", views: "209K views", age: "5 days ago", duration: "16:22", accent: "from-neutral-700 via-black to-rose-950" },
-  ];
-  const categories = ["All", "Music", "Gaming", "Mixes", "Live", "Design", "React", "Podcasts", "Recently uploaded"];
-  const navItems = ["Home", "Shorts", "Subscriptions", "Library", "History", "Your videos", "Watch later"];
-  const previewHtml = `<main class="youtube-app">
-  <header class="topbar">
-    <div class="brand"><button aria-label="Open menu">☰</button><span class="play">▶</span><strong>YouTube</strong></div>
-    <div class="search"><span>Search</span><button aria-label="Search">⌕</button></div>
-    <div class="actions"><button>Create</button><button>Notifications</button><i>V</i></div>
-  </header>
-  <aside class="sidebar">
-    ${navItems.map((item, index) => `<a class="${index === 0 ? "active" : ""}" href="#"><span>${index === 0 ? "⌂" : index === 1 ? "▶" : index === 2 ? "▣" : "•"}</span>${item}</a>`).join("\n    ")}
-  </aside>
-  <section class="content">
-    <nav class="chips">${categories.map((category, index) => `<a class="${index === 0 ? "active" : ""}" href="#">${category}</a>`).join("")}</nav>
-    <section class="hero-video">
-      <div class="hero-player"><span>LIVE</span><strong>Now playing</strong></div>
-      <div class="hero-copy">
-        <p>Recommended</p>
-        <h1>Watch what creators are publishing right now</h1>
-        <span>Trending videos, creator channels, category filters, and a dense responsive feed built for browsing.</span>
-      </div>
-    </section>
-    <section class="video-grid">
-      ${videos.map((video, index) => `<article class="video-card">
-        <div class="thumbnail thumb-${index + 1}"><span>${video.duration}</span></div>
-        <div class="video-meta"><i>${video.channel.charAt(0)}</i><div><h2>${video.title}</h2><p>${video.channel}</p><small>${video.views} • ${video.age}</small></div></div>
-      </article>`).join("\n      ")}
-    </section>
-  </section>
-</main>`;
-  const previewCss = `*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#0f0f0f;color:#f1f1f1;font-family:Inter,Arial,sans-serif}button,a{font:inherit}.youtube-app{min-height:100vh;background:#0f0f0f;color:#f1f1f1}.topbar{position:sticky;top:0;z-index:10;display:grid;grid-template-columns:240px minmax(220px,680px) 1fr;gap:18px;align-items:center;height:64px;border-bottom:1px solid rgba(255,255,255,.09);background:rgba(15,15,15,.96);padding:0 22px;backdrop-filter:blur(16px)}.brand{display:flex;align-items:center;gap:10px}.brand button,.search button,.actions button{border:0;background:transparent;color:#f1f1f1;cursor:pointer}.brand button{font-size:22px}.play{display:grid;place-items:center;width:38px;height:27px;border-radius:8px;background:#ff0033;color:white;font-size:13px}.brand strong{font-size:22px;letter-spacing:-.04em}.search{display:grid;grid-template-columns:1fr 54px;height:42px;border:1px solid #303030;border-radius:999px;background:#121212;overflow:hidden}.search span{display:flex;align-items:center;color:#8f8f8f;padding:0 18px}.search button{border-left:1px solid #303030;background:#222;font-size:20px}.actions{display:flex;justify-content:flex-end;align-items:center;gap:10px}.actions button{border-radius:999px;background:#272727;padding:10px 14px;font-size:13px;font-weight:700}.actions i{display:grid;place-items:center;width:34px;height:34px;border-radius:999px;background:#7c2d12;font-style:normal;font-weight:800}.sidebar{position:fixed;left:0;top:64px;bottom:0;width:236px;border-right:1px solid rgba(255,255,255,.08);background:#0f0f0f;padding:12px}.sidebar a{display:flex;align-items:center;gap:18px;border-radius:12px;color:#f1f1f1;text-decoration:none;padding:12px 14px;font-size:14px}.sidebar a:hover,.sidebar a.active{background:#272727}.sidebar span{width:22px;color:#aaa;text-align:center}.content{margin-left:236px;padding:16px 24px 38px}.chips{position:sticky;top:64px;z-index:8;display:flex;gap:10px;overflow:auto;background:rgba(15,15,15,.96);padding:0 0 16px;backdrop-filter:blur(14px)}.chips a{flex:0 0 auto;border-radius:10px;background:#272727;color:#f1f1f1;text-decoration:none;padding:8px 13px;font-size:14px;font-weight:700}.chips a.active{background:#f1f1f1;color:#0f0f0f}.hero-video{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.7fr);gap:22px;margin-bottom:28px}.hero-player{min-height:350px;border-radius:22px;background:linear-gradient(135deg,#3f3f46,#111 55%,#991b1b);display:flex;align-items:flex-end;justify-content:space-between;padding:18px;box-shadow:0 22px 80px rgba(0,0,0,.38)}.hero-player span,.hero-player strong{border-radius:999px;background:rgba(0,0,0,.72);padding:8px 12px;font-size:12px}.hero-player span{background:#dc2626;font-weight:900}.hero-copy{border:1px solid rgba(255,255,255,.1);border-radius:22px;background:#181818;padding:24px}.hero-copy p{margin:0;color:#f87171;font-size:12px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}.hero-copy h1{margin:14px 0;font-size:clamp(30px,4vw,52px);line-height:.96;letter-spacing:-.04em}.hero-copy span{display:block;color:#aaa;line-height:1.65}.video-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px 18px}.video-card{min-width:0}.thumbnail{position:relative;aspect-ratio:16/9;border-radius:16px;background:linear-gradient(135deg,#52525b,#18181b 58%,#7f1d1d);overflow:hidden}.thumbnail:before{content:"";position:absolute;inset:18px;border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.02));opacity:.55}.thumbnail span{position:absolute;right:8px;bottom:8px;border-radius:6px;background:rgba(0,0,0,.84);padding:4px 6px;font-size:12px;font-weight:800}.thumb-2{background:linear-gradient(135deg,#334155,#09090b 58%,#1d4ed8)}.thumb-3{background:linear-gradient(135deg,#57534e,#09090b 58%,#6d28d9)}.thumb-4{background:linear-gradient(135deg,#3f3f46,#09090b 58%,#047857)}.thumb-5{background:linear-gradient(135deg,#52525b,#09090b 58%,#0891b2)}.thumb-6{background:linear-gradient(135deg,#44403c,#09090b 58%,#ea580c)}.thumb-7{background:linear-gradient(135deg,#475569,#09090b 58%,#0284c7)}.thumb-8{background:linear-gradient(135deg,#525252,#09090b 58%,#be123c)}.video-meta{display:grid;grid-template-columns:38px minmax(0,1fr);gap:11px;margin-top:12px}.video-meta i{display:grid;place-items:center;width:38px;height:38px;border-radius:999px;background:#3b3b3b;color:#fff;font-style:normal;font-weight:900}.video-meta h2{margin:0;color:#f1f1f1;font-size:15px;line-height:1.35}.video-meta p,.video-meta small{display:block;margin:5px 0 0;color:#aaa;font-size:13px;line-height:1.35}@media(max-width:1200px){.video-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero-video{grid-template-columns:1fr}.hero-player{min-height:280px}}@media(max-width:820px){.topbar{grid-template-columns:1fr;height:auto;padding:12px}.actions{justify-content:flex-start}.sidebar{display:none}.content{margin-left:0;padding:12px}.chips{top:0}.video-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.video-grid{grid-template-columns:1fr}.hero-copy h1{font-size:34px}}`;
-  const appFile = `const navItems = ${JSON.stringify(navItems, null, 2)};
-const categories = ${JSON.stringify(categories, null, 2)};
-const videos = ${JSON.stringify(videos, null, 2)};
-
-export default function App() {
-  return (
-    <main className="min-h-screen bg-[#0f0f0f] text-[#f1f1f1]">
-      <header className="sticky top-0 z-20 grid gap-3 border-b border-white/10 bg-[#0f0f0f]/95 px-4 py-3 backdrop-blur lg:grid-cols-[220px_minmax(240px,680px)_1fr] lg:items-center">
-        <div className="flex items-center gap-3">
-          <button className="text-2xl" aria-label="Open menu">☰</button>
-          <span className="grid h-7 w-10 place-items-center rounded-lg bg-[#ff0033] text-xs font-black text-white">▶</span>
-          <strong className="text-2xl tracking-[-0.04em]">YouTube</strong>
-        </div>
-        <div className="grid h-11 grid-cols-[1fr_54px] overflow-hidden rounded-full border border-[#303030] bg-[#121212]">
-          <div className="flex items-center px-5 text-zinc-500">Search</div>
-          <button className="border-l border-[#303030] bg-[#222] text-xl" aria-label="Search">⌕</button>
-        </div>
-        <div className="flex items-center gap-2 lg:justify-end">
-          <button className="rounded-full bg-[#272727] px-4 py-2 text-sm font-bold">Create</button>
-          <button className="rounded-full bg-[#272727] px-4 py-2 text-sm font-bold">Notifications</button>
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-orange-900 font-black">V</span>
-        </div>
-      </header>
-
-      <aside className="fixed bottom-0 left-0 top-[65px] hidden w-60 border-r border-white/10 bg-[#0f0f0f] p-3 lg:block">
-        <nav className="grid gap-1">
-          {navItems.map((item, index) => (
-            <a key={item} className={\`flex items-center gap-4 rounded-xl px-4 py-3 text-sm transition hover:bg-[#272727] \${index === 0 ? "bg-[#272727]" : ""}\`} href="#">
-              <span className="w-6 text-center text-zinc-400">{index === 0 ? "⌂" : index === 1 ? "▶" : index === 2 ? "▣" : "•"}</span>
-              {item}
-            </a>
-          ))}
-        </nav>
-      </aside>
-
-      <section className="p-4 lg:ml-60 lg:p-6">
-        <nav className="sticky top-[65px] z-10 flex gap-2 overflow-auto bg-[#0f0f0f]/95 pb-4 backdrop-blur">
-          {categories.map((category, index) => (
-            <a key={category} className={\`shrink-0 rounded-xl px-4 py-2 text-sm font-bold \${index === 0 ? "bg-white text-black" : "bg-[#272727] text-white"}\`} href="#">
-              {category}
-            </a>
-          ))}
-        </nav>
-
-        <section className="mb-7 grid gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(280px,.7fr)]">
-          <div className="flex min-h-72 items-end justify-between rounded-[1.4rem] bg-gradient-to-br from-zinc-700 via-black to-red-950 p-5 shadow-2xl shadow-black/40 xl:min-h-[350px]">
-            <span className="rounded-full bg-red-600 px-3 py-2 text-xs font-black">LIVE</span>
-            <strong className="rounded-full bg-black/75 px-3 py-2 text-xs">Now playing</strong>
-          </div>
-          <div className="rounded-[1.4rem] border border-white/10 bg-[#181818] p-6">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-red-400">Recommended</p>
-            <h1 className="mt-4 text-4xl font-semibold leading-none tracking-[-0.04em] md:text-5xl">Watch what creators are publishing right now</h1>
-            <p className="mt-5 leading-7 text-zinc-400">Trending videos, creator channels, category filters, and a dense responsive feed built for browsing.</p>
-          </div>
-        </section>
-
-        <section className="grid gap-x-5 gap-y-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {videos.map((video, index) => (
-            <article key={video.title} className="min-w-0">
-              <div className={\`relative aspect-video overflow-hidden rounded-2xl bg-gradient-to-br \${video.accent}\`}>
-                <div className="absolute inset-5 rounded-2xl bg-white/10" />
-                <span className="absolute bottom-2 right-2 rounded-md bg-black/85 px-2 py-1 text-xs font-black">{video.duration}</span>
-              </div>
-              <div className="mt-3 grid grid-cols-[38px_minmax(0,1fr)] gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-full bg-zinc-700 font-black">{video.channel.charAt(0)}</div>
-                <div>
-                  <h2 className="line-clamp-2 text-[15px] font-semibold leading-5">{video.title}</h2>
-                  <p className="mt-1 text-sm text-zinc-400">{video.channel}</p>
-                  <p className="text-sm text-zinc-400">{video.views} • {video.age}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-        </section>
-      </section>
-    </main>
-  );
-}
-`;
-
-  return {
-    title: "YouTube",
-    summary: "A dense, responsive YouTube-style video platform with a sticky top bar, sidebar navigation, category chips, featured player, and realistic video grid.",
-    previewHtml,
-    previewCss,
-    previewJs: "",
-    files: [
-      {
-        path: "package.json",
-        content: JSON.stringify(
-          {
-            scripts: { dev: "vite --host 0.0.0.0", build: "vite build", preview: "vite preview" },
-            dependencies: { "@vitejs/plugin-react": "^4.3.1", vite: "^5.4.0", typescript: "^5.6.3", react: "^18.3.1", "react-dom": "^18.3.1" },
-            devDependencies: { tailwindcss: "^3.4.17", autoprefixer: "^10.4.20", postcss: "^8.4.49" },
-          },
-          null,
-          2,
-        ),
-      },
-      { path: "index.html", content: '<div id="root"></div><script type="module" src="/src/main.jsx"></script>\n' },
-      { path: "src/main.jsx", content: 'import React from "react";\nimport { createRoot } from "react-dom/client";\nimport App from "./App.jsx";\nimport "./index.css";\n\ncreateRoot(document.getElementById("root")).render(<App />);\n' },
-      { path: "src/App.jsx", content: appFile },
-      { path: "src/index.css", content: "@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\nbody { margin: 0; background: #0f0f0f; }\n" },
-      { path: "tailwind.config.js", content: "export default { content: ['./index.html', './src/**/*.{js,jsx}'], theme: { extend: {} }, plugins: [] };\n" },
-      { path: "postcss.config.js", content: "export default { plugins: { tailwindcss: {}, autoprefixer: {} } };\n" },
-      { path: "README.md", content: "# YouTube Clone\n\nA responsive YouTube-style React and Tailwind prototype generated by Mosaic.\n" },
-    ],
-    notes: ["Applied YouTube clone quality template because the model output was too shallow."],
-  };
-}
-
-function createFashionBrandGeneration(prompt: string): z.infer<typeof generationSchema> {
-  const brandName = extractBrandName(prompt) || "Diya";
-  const products = [
-    { name: "Sora Silk Shirt", description: "Fluid satin finish with relaxed tailoring.", price: "$128" },
-    { name: "Noor Linen Set", description: "Breathable co-ord for slow summer evenings.", price: "$164" },
-    { name: "Ava Pleated Trouser", description: "Soft drape, high waist, polished movement.", price: "$142" },
-    { name: "Mira Wrap Dress", description: "Elegant day-to-night shape with a sculpted tie.", price: "$188" },
-    { name: "Rhea Knit Tank", description: "Ribbed cotton blend with a clean neckline.", price: "$74" },
-    { name: "Veda Atelier Coat", description: "Structured wool layer with tonal hardware.", price: "$268" },
-  ];
-  const previewHtml = `<main class="fashion-site">
-  <nav class="nav"><strong>${escapeHtml(brandName)}</strong><div><a href="#">New</a><a href="#">Collections</a><a href="#">Lookbook</a><a href="#">Journal</a></div><button>Shop now</button></nav>
-  <section class="hero">
-    <div><p class="eyebrow">New season atelier</p><h1>Quiet luxury pieces designed for modern rituals.</h1><p class="hero-copy">${escapeHtml(brandName)} creates elevated essentials with sculptural fits, soft textures, and a wardrobe-first point of view.</p><div class="actions"><button>Explore collection</button><button class="secondary">View lookbook</button></div></div>
-    <div class="hero-media"><span>Spring Edit</span></div>
-  </section>
-  <section class="collections"><article><span>01</span><h2>Soft tailoring</h2><p>Relaxed blazers, pleated trousers, and sets that move from studio to dinner.</p></article><article><span>02</span><h2>Weekend linen</h2><p>Airy separates in oat, ink, and clay for warm-weather layering.</p></article><article><span>03</span><h2>Evening ease</h2><p>Silk shirts, wrap dresses, and subtle shine for low-effort occasions.</p></article></section>
-  <section class="product-section"><div class="section-head"><p class="eyebrow">Best sellers</p><h2>Signature pieces with real wardrobe range.</h2></div><div class="products">${products.map((product, index) => `<article class="product"><div class="product-image tone-${index + 1}"><span>${escapeHtml(product.price)}</span></div><h3>${escapeHtml(product.name)}</h3><p>${escapeHtml(product.description)}</p><button>Add to wishlist</button></article>`).join("")}</div></section>
-  <section class="lookbook"><div><p class="eyebrow">Editorial lookbook</p><h2>Layer texture, shape, and softness without losing clarity.</h2><p>Pair satin with linen, structure with drape, and muted color with one grounded accent. Every piece is designed to sit naturally inside a refined everyday wardrobe.</p></div><div class="lookbook-grid"><span></span><span></span><span></span><span></span></div></section>
-  <section class="story"><blockquote>"${escapeHtml(brandName)} feels elevated without feeling precious. The cuts are thoughtful, and every piece earns its place."</blockquote><p>Maya Chen, Creative Director</p></section>
-  <section class="newsletter"><div><p class="eyebrow">Private notes</p><h2>Receive collection previews and styling edits.</h2></div><form><input placeholder="Email address" /><button>Join list</button></form></section>
-  <footer><strong>${escapeHtml(brandName)}</strong><span>Modern clothing for edited wardrobes.</span><div><a href="#">Instagram</a><a href="#">Shipping</a><a href="#">Contact</a></div></footer>
-</main>`;
-  const previewCss = `*{box-sizing:border-box}html,body{margin:0;background:#f7f2ec;color:#201b16;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,a{font:inherit}.fashion-site{min-height:100vh;background:radial-gradient(circle at 12% 0%,rgba(185,136,91,.18),transparent 30rem),#f7f2ec;color:#201b16;padding:24px}.nav,.hero,.collections,.product-section,.lookbook,.story,.newsletter,footer{max-width:1180px;margin-left:auto;margin-right:auto}.nav{display:flex;align-items:center;justify-content:space-between;gap:20px;border:1px solid rgba(32,27,22,.12);border-radius:999px;background:rgba(255,255,255,.55);padding:14px 16px 14px 22px;backdrop-filter:blur(18px);box-shadow:0 20px 80px rgba(80,55,35,.1)}.nav strong{font-size:23px;letter-spacing:-.04em}.nav div{display:flex;gap:6px;flex-wrap:wrap}.nav a{border-radius:999px;color:#6f6256;padding:9px 12px;text-decoration:none}.nav a:hover{background:#fff;color:#201b16}.nav button,.actions button,.product button,.newsletter button{border:0;border-radius:999px;background:#201b16;color:#fff;cursor:pointer;font-weight:800;padding:12px 17px;transition:transform .2s,opacity .2s}.nav button:hover,.actions button:hover,.product button:hover,.newsletter button:hover{opacity:.9;transform:translateY(-1px)}.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:stretch;padding:52px 0 26px}.hero>div:first-child{align-content:center;border:1px solid rgba(32,27,22,.1);border-radius:38px;background:rgba(255,255,255,.44);padding:52px;box-shadow:0 30px 90px rgba(80,55,35,.11)}.eyebrow{color:#9a6739;font-size:12px;font-weight:900;letter-spacing:.18em;margin:0;text-transform:uppercase}.hero h1{font-family:Georgia,serif;font-size:clamp(48px,7vw,86px);font-weight:500;letter-spacing:-.055em;line-height:.9;margin:18px 0}.hero-copy{color:#76685d;font-size:18px;line-height:1.75;max-width:610px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.actions .secondary{background:transparent;border:1px solid rgba(32,27,22,.18);color:#201b16}.hero-media{min-height:560px;border-radius:38px;background:linear-gradient(145deg,#d9c7b7,#8f674b 55%,#2b211b);box-shadow:0 34px 110px rgba(80,55,35,.22);display:flex;align-items:flex-end;padding:24px}.hero-media span{border-radius:999px;background:rgba(255,255,255,.76);padding:10px 14px;font-weight:800}.collections{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.collections article,.product,.lookbook,.story,.newsletter{border:1px solid rgba(32,27,22,.1);border-radius:28px;background:rgba(255,255,255,.52);box-shadow:0 18px 70px rgba(80,55,35,.08)}.collections article{padding:24px}.collections span{color:#9a6739;font-weight:900}.collections h2{font-family:Georgia,serif;font-size:28px;font-weight:500;margin:18px 0 8px}.collections p,.product p,.lookbook p,.story p,footer span{color:#76685d;line-height:1.65}.product-section{padding:60px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:20px}.section-head h2,.lookbook h2,.newsletter h2{font-family:Georgia,serif;font-size:clamp(34px,5vw,58px);font-weight:500;letter-spacing:-.04em;line-height:1;margin:12px 0 0}.products{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.product{padding:14px}.product-image{height:260px;border-radius:22px;background:linear-gradient(145deg,#d8c7ba,#7a5943);display:flex;align-items:flex-end;justify-content:flex-end;padding:14px}.product-image span{border-radius:999px;background:#201b16;color:white;padding:7px 10px;font-size:13px;font-weight:900}.tone-2{background:linear-gradient(145deg,#eadfcd,#9a7b58)}.tone-3{background:linear-gradient(145deg,#d6d2c7,#5f6057)}.tone-4{background:linear-gradient(145deg,#e9d0cf,#7b4e4a)}.tone-5{background:linear-gradient(145deg,#ddd6c9,#7c705f)}.tone-6{background:linear-gradient(145deg,#c8bbb1,#33251d)}.product h3{font-size:20px;margin:16px 0 6px}.product button{margin-top:14px;width:100%;background:#fff;color:#201b16;border:1px solid rgba(32,27,22,.12)}.lookbook{display:grid;grid-template-columns:.8fr 1.2fr;gap:24px;padding:28px}.lookbook-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.lookbook-grid span{min-height:260px;border-radius:24px;background:linear-gradient(160deg,#d9c7b7,#8a654b)}.lookbook-grid span:nth-child(2){margin-top:42px;background:linear-gradient(160deg,#eee2d0,#a77f58)}.lookbook-grid span:nth-child(3){background:linear-gradient(160deg,#d7d0c4,#5d5b52)}.lookbook-grid span:nth-child(4){margin-top:28px;background:linear-gradient(160deg,#d8bebb,#6d4641)}.story{margin-top:16px;padding:34px;text-align:center}.story blockquote{font-family:Georgia,serif;font-size:clamp(26px,4vw,42px);line-height:1.12;margin:0 auto;max-width:880px}.newsletter{align-items:center;display:grid;grid-template-columns:1fr minmax(260px,.65fr);gap:20px;margin-top:16px;padding:28px}.newsletter form{display:grid;grid-template-columns:1fr auto;gap:10px}.newsletter input{border:1px solid rgba(32,27,22,.12);border-radius:999px;background:#fff;padding:14px 16px;min-width:0}footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:34px 0;color:#76685d}footer a{color:#76685d;margin-left:14px;text-decoration:none}footer a:hover{color:#201b16}@media(max-width:900px){.hero,.lookbook,.newsletter{grid-template-columns:1fr}.hero>div:first-child{padding:34px}.hero-media{min-height:360px}.collections,.products{grid-template-columns:1fr}.section-head,footer,.nav{align-items:flex-start;flex-direction:column}.lookbook-grid{grid-template-columns:repeat(2,1fr)}.newsletter form{grid-template-columns:1fr}.fashion-site{padding:14px}}`;
-  const appFile = `const products = ${JSON.stringify(products, null, 2)};
-
-export default function App() {
-  return (
-    <main className="min-h-screen bg-[#f7f2ec] p-4 text-[#201b16] md:p-6">
-      <nav className="mx-auto flex max-w-7xl flex-col gap-4 rounded-full border border-black/10 bg-white/55 px-6 py-4 shadow-2xl shadow-stone-900/10 backdrop-blur md:flex-row md:items-center md:justify-between">
-        <strong className="text-2xl tracking-[-0.04em]">${escapeJsx(brandName)}</strong>
-        <div className="flex flex-wrap gap-2 text-sm text-stone-500">
-          {["New", "Collections", "Lookbook", "Journal"].map((item) => <a className="rounded-full px-3 py-2 hover:bg-white hover:text-stone-950" href="#" key={item}>{item}</a>)}
-        </div>
-        <button className="rounded-full bg-stone-950 px-5 py-3 text-sm font-black text-white">Shop now</button>
-      </nav>
-
-      <section className="mx-auto grid max-w-7xl gap-6 py-12 lg:grid-cols-[1.05fr_.95fr]">
-        <div className="rounded-[2.4rem] border border-black/10 bg-white/45 p-8 shadow-2xl shadow-stone-900/10 md:p-14">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-amber-800">New season atelier</p>
-          <h1 className="mt-5 font-serif text-5xl leading-[0.9] tracking-[-0.055em] md:text-7xl">Quiet luxury pieces designed for modern rituals.</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-600">${escapeJsx(brandName)} creates elevated essentials with sculptural fits, soft textures, and a wardrobe-first point of view.</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <button className="rounded-full bg-stone-950 px-5 py-3 font-black text-white">Explore collection</button>
-            <button className="rounded-full border border-black/15 px-5 py-3 font-black">View lookbook</button>
-          </div>
-        </div>
-        <div className="flex min-h-[360px] items-end rounded-[2.4rem] bg-gradient-to-br from-stone-200 via-amber-800 to-stone-950 p-6 shadow-2xl shadow-stone-900/20 lg:min-h-[560px]">
-          <span className="rounded-full bg-white/80 px-4 py-2 text-sm font-black">Spring Edit</span>
-        </div>
-      </section>
-
-      <section className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
-        {["Soft tailoring", "Weekend linen", "Evening ease"].map((title, index) => (
-          <article className="rounded-3xl border border-black/10 bg-white/50 p-6 shadow-xl shadow-stone-900/5" key={title}>
-            <span className="font-black text-amber-800">0{index + 1}</span>
-            <h2 className="mt-5 font-serif text-3xl">{title}</h2>
-            <p className="mt-3 leading-7 text-stone-600">Refined pieces with texture, movement, and enough structure for everyday polish.</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="mx-auto max-w-7xl py-16">
-        <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div><p className="text-xs font-black uppercase tracking-[0.18em] text-amber-800">Best sellers</p><h2 className="mt-3 font-serif text-5xl tracking-[-0.04em]">Signature pieces with real wardrobe range.</h2></div>
-        </div>
-        <div className="grid gap-4 md:grid-cols-3">
-          {products.map((product, index) => (
-            <article className="rounded-3xl border border-black/10 bg-white/55 p-4 shadow-xl shadow-stone-900/5" key={product.name}>
-              <div className="flex h-64 items-end justify-end rounded-3xl bg-gradient-to-br from-stone-200 via-amber-700 to-stone-900 p-4">
-                <span className="rounded-full bg-stone-950 px-3 py-2 text-sm font-black text-white">{product.price}</span>
-              </div>
-              <h3 className="mt-4 text-xl font-bold">{product.name}</h3>
-              <p className="mt-2 leading-6 text-stone-600">{product.description}</p>
-              <button className="mt-5 w-full rounded-full border border-black/10 bg-white px-4 py-3 font-black hover:bg-stone-950 hover:text-white">Add to wishlist</button>
-            </article>
-          ))}
-        </div>
-      </section>
-    </main>
-  );
-}
-`;
-
-  return {
-    title: brandName,
-    summary: `A premium fashion ecommerce landing page for ${brandName} with luxury hero, collection cards, products, editorial styling, newsletter, and responsive Tailwind polish.`,
-    previewHtml,
-    previewCss,
-    previewJs: "",
-    files: createViteFiles(appFile, brandName, "# Premium fashion ecommerce landing page generated by Mosaic.\n"),
-    notes: ["Applied premium fashion quality template because the model output was too shallow."],
-  };
-}
-
-function createCafeGeneration(prompt: string): z.infer<typeof generationSchema> {
-  const brandName = extractBrandName(prompt) || "Morrow Cafe";
-  const menu = [
-    { name: "Cardamom Latte", description: "House espresso, steamed oat milk, cardamom syrup.", price: "$6" },
-    { name: "Citrus Cold Brew", description: "Slow-steeped coffee with orange peel and tonic.", price: "$7" },
-    { name: "Rose Pistachio Croissant", description: "Buttery pastry filled with rose cream and pistachio.", price: "$8" },
-    { name: "Market Toast", description: "Sourdough, whipped ricotta, herbs, seasonal tomatoes.", price: "$12" },
-    { name: "Honey Fig Bowl", description: "Greek yogurt, figs, walnut crumble, wild honey.", price: "$11" },
-    { name: "Midnight Mocha", description: "Dark chocolate, double espresso, velvet foam.", price: "$6" },
-  ];
-  const previewHtml = `<main class="cafe-site">
-  <nav class="nav"><strong>${escapeHtml(brandName)}</strong><div><a href="#">Menu</a><a href="#">Roasts</a><a href="#">Visit</a><a href="#">Events</a></div><button>Reserve a table</button></nav>
-  <section class="hero"><div><p class="eyebrow">Neighborhood coffee house</p><h1>Slow mornings, careful coffee, and food worth lingering over.</h1><p>${escapeHtml(brandName)} blends seasonal cafe plates, small-batch roasts, and warm service in a space designed for everyday rituals.</p><div class="actions"><button>View menu</button><button class="secondary">Get directions</button></div></div><aside><span>Open today</span><strong>7:00 AM - 8:30 PM</strong><small>Walk-ins welcome. Weekend brunch fills quickly.</small></aside></section>
-  <section class="features"><article><span>01</span><h2>Single-origin espresso</h2><p>Rotating beans from thoughtful roasters, dialed in every morning.</p></article><article><span>02</span><h2>Seasonal kitchen</h2><p>Toasts, pastries, bowls, and brunch plates built around market produce.</p></article><article><span>03</span><h2>Evening events</h2><p>Vinyl nights, cuppings, community dinners, and quiet work sessions.</p></article></section>
-  <section class="menu"><div class="section-head"><p class="eyebrow">House favorites</p><h2>A compact menu with real character.</h2></div><div class="menu-grid">${menu.map((item) => `<article><div><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.description)}</p></div><strong>${escapeHtml(item.price)}</strong></article>`).join("")}</div></section>
-  <section class="split"><div><p class="eyebrow">The room</p><h2>Warm light, walnut tables, and a bar that feels alive all day.</h2><p>Settle into a morning corner, host a low-key meeting, or stop by after work for a small plate and a pour-over.</p></div><div class="photo-grid"><span></span><span></span><span></span></div></section>
-  <section class="quote"><blockquote>"The kind of cafe where the coffee is precise, the food is generous, and the room makes you slow down."</blockquote><p>Avery Stone, regular since opening week</p></section>
-  <section class="newsletter"><h2>Get the weekly roast note.</h2><form><input placeholder="Email address" /><button>Join</button></form></section>
-  <footer><strong>${escapeHtml(brandName)}</strong><span>124 Linden Street · Open daily</span><div><a href="#">Instagram</a><a href="#">Menu PDF</a><a href="#">Contact</a></div></footer>
-</main>`;
-  const previewCss = `*{box-sizing:border-box}html,body{margin:0;background:#17120e;color:#fff7ed;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,a{font:inherit}.cafe-site{min-height:100vh;background:radial-gradient(circle at 18% 0%,rgba(180,116,58,.28),transparent 30rem),linear-gradient(180deg,#17120e,#241a13);padding:24px}.nav,.hero,.features,.menu,.split,.quote,.newsletter,footer{max-width:1180px;margin:auto}.nav{display:flex;align-items:center;justify-content:space-between;gap:18px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.07);padding:14px 16px 14px 22px;backdrop-filter:blur(18px);box-shadow:0 24px 80px rgba(0,0,0,.25)}.nav strong{font-size:23px;letter-spacing:-.04em}.nav div{display:flex;gap:6px;flex-wrap:wrap}.nav a{border-radius:999px;color:#d6c2aa;text-decoration:none;padding:9px 12px}.nav a:hover{background:rgba(255,255,255,.1);color:white}.nav button,.actions button,.newsletter button{border:0;border-radius:999px;background:#f4c77c;color:#21150d;cursor:pointer;font-weight:900;padding:12px 17px;transition:transform .2s,opacity .2s}.nav button:hover,.actions button:hover,.newsletter button:hover{transform:translateY(-1px);opacity:.9}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;padding:54px 0 22px}.hero>div,.hero aside,.features article,.menu,.split,.quote,.newsletter{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);box-shadow:0 30px 100px rgba(0,0,0,.22)}.hero>div{border-radius:38px;padding:52px}.eyebrow{color:#f4c77c;font-size:12px;font-weight:900;letter-spacing:.18em;margin:0;text-transform:uppercase}.hero h1{font-family:Georgia,serif;font-size:clamp(48px,7vw,86px);font-weight:500;letter-spacing:-.055em;line-height:.9;margin:18px 0}.hero p,.hero small,.features p,.menu p,.split p,footer span{color:#d6c2aa;line-height:1.72}.hero p{font-size:18px;max-width:680px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.actions .secondary{background:transparent;border:1px solid rgba(255,255,255,.16);color:white}.hero aside{align-content:end;border-radius:38px;background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(92,52,24,.78)),linear-gradient(145deg,#6b3f21,#20120b);min-height:520px;padding:28px}.hero aside span{color:#f4c77c;font-size:12px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}.hero aside strong{display:block;font-size:42px;line-height:1;margin:14px 0}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.features article{border-radius:28px;padding:24px}.features span{color:#f4c77c;font-weight:900}.features h2,.section-head h2,.split h2,.newsletter h2{font-family:Georgia,serif;font-size:clamp(30px,4vw,54px);font-weight:500;letter-spacing:-.04em;line-height:1;margin:12px 0}.menu{border-radius:34px;margin-top:18px;padding:28px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:18px}.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.menu-grid article{display:flex;justify-content:space-between;gap:16px;border-radius:22px;background:rgba(0,0,0,.18);padding:18px}.menu h3{margin:0 0 6px}.menu strong{color:#f4c77c}.split{display:grid;grid-template-columns:.85fr 1.15fr;gap:22px;border-radius:34px;margin-top:18px;padding:28px}.photo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.photo-grid span{min-height:280px;border-radius:24px;background:linear-gradient(160deg,#70411f,#f4c77c)}.photo-grid span:nth-child(2){margin-top:44px;background:linear-gradient(160deg,#2b1810,#8f5b2c)}.photo-grid span:nth-child(3){background:linear-gradient(160deg,#4f2c19,#d89956)}.quote{border-radius:34px;margin-top:18px;padding:34px;text-align:center}.quote blockquote{font-family:Georgia,serif;font-size:clamp(26px,4vw,42px);line-height:1.15;margin:0 auto;max-width:860px}.newsletter{align-items:center;border-radius:34px;display:grid;grid-template-columns:1fr minmax(260px,.7fr);gap:20px;margin-top:18px;padding:28px}.newsletter form{display:grid;grid-template-columns:1fr auto;gap:10px}.newsletter input{border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.1);color:white;min-width:0;padding:14px 16px}footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:34px 0;color:#d6c2aa}footer a{color:#d6c2aa;margin-left:14px;text-decoration:none}footer a:hover{color:white}@media(max-width:900px){.hero,.split,.newsletter{grid-template-columns:1fr}.hero>div{padding:34px}.hero aside{min-height:320px}.features,.menu-grid{grid-template-columns:1fr}.section-head,footer,.nav{align-items:flex-start;flex-direction:column}.photo-grid{grid-template-columns:1fr}.photo-grid span:nth-child(2){margin-top:0}.cafe-site{padding:14px}}`;
-  const appFile = `const menu = ${JSON.stringify(menu, null, 2)};
-
-export default function App() {
-  return (
-    <main className="min-h-screen bg-[#17120e] p-4 text-orange-50 md:p-6">
-      <nav className="mx-auto flex max-w-7xl flex-col gap-4 rounded-full border border-white/10 bg-white/[0.07] px-6 py-4 shadow-2xl shadow-black/30 backdrop-blur md:flex-row md:items-center md:justify-between">
-        <strong className="text-2xl tracking-[-0.04em]">${escapeJsx(brandName)}</strong>
-        <div className="flex flex-wrap gap-2 text-sm text-orange-100/70">
-          {["Menu", "Roasts", "Visit", "Events"].map((item) => <a className="rounded-full px-3 py-2 hover:bg-white/10 hover:text-white" href="#" key={item}>{item}</a>)}
-        </div>
-        <button className="rounded-full bg-amber-300 px-5 py-3 text-sm font-black text-stone-950">Reserve a table</button>
-      </nav>
-      <section className="mx-auto grid max-w-7xl gap-6 py-12 lg:grid-cols-[1.1fr_.9fr]">
-        <div className="rounded-[2.4rem] border border-white/10 bg-white/[0.07] p-8 shadow-2xl shadow-black/25 md:p-14">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-amber-300">Neighborhood coffee house</p>
-          <h1 className="mt-5 font-serif text-5xl leading-[0.9] tracking-[-0.055em] md:text-7xl">Slow mornings, careful coffee, and food worth lingering over.</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-orange-100/70">${escapeJsx(brandName)} blends seasonal cafe plates, small-batch roasts, and warm service in a space designed for everyday rituals.</p>
-          <div className="mt-8 flex flex-wrap gap-3"><button className="rounded-full bg-amber-300 px-5 py-3 font-black text-stone-950">View menu</button><button className="rounded-full border border-white/15 px-5 py-3 font-black">Get directions</button></div>
-        </div>
-        <aside className="flex min-h-[340px] flex-col justify-end rounded-[2.4rem] bg-gradient-to-br from-amber-900 via-stone-950 to-black p-8 shadow-2xl shadow-black/30 lg:min-h-[520px]">
-          <span className="text-xs font-black uppercase tracking-[0.16em] text-amber-300">Open today</span><strong className="mt-4 text-5xl leading-none">7:00 AM - 8:30 PM</strong><small className="mt-4 text-orange-100/70">Walk-ins welcome. Weekend brunch fills quickly.</small>
-        </aside>
-      </section>
-      <section className="mx-auto grid max-w-7xl gap-3 md:grid-cols-2">
-        {menu.map((item) => <article className="flex justify-between gap-5 rounded-3xl border border-white/10 bg-white/[0.07] p-5" key={item.name}><div><h3 className="font-bold">{item.name}</h3><p className="mt-2 text-sm leading-6 text-orange-100/65">{item.description}</p></div><strong className="text-amber-300">{item.price}</strong></article>)}
-      </section>
-    </main>
-  );
-}
-`;
-
-  return {
-    title: brandName,
-    summary: `A polished responsive cafe website for ${brandName} with warm hospitality styling, menu cards, visit details, editorial sections, and reservation CTA.`,
-    previewHtml,
-    previewCss,
-    previewJs: "",
-    files: createViteFiles(appFile, brandName, "# Premium cafe website generated by Mosaic.\n"),
-    notes: ["Applied cafe quality template because the AI provider response was unavailable or too weak."],
-  };
-}
-
-function createAiChatGeneration(prompt: string): z.infer<typeof generationSchema> {
-  const brandName = extractBrandName(prompt) || "Nexus Chat";
-  const threads = ["Launch strategy", "Website redesign", "Customer research", "Sprint planning"];
-  const messages = [
-    { role: "user", text: "Build a launch plan for a design subscription product." },
-    { role: "ai", text: "I mapped the audience, offer, landing sections, and a 14-day content sprint." },
-    { role: "user", text: "Tighten the positioning and make it feel premium." },
-    { role: "ai", text: "Updated the value prop, added proof points, and simplified the hero message." },
-  ];
-  const previewHtml = `<main class="chat-app">
-  <aside class="sidebar"><strong>${escapeHtml(brandName)}</strong><button>New chat</button><nav>${threads.map((thread, index) => `<a class="${index === 0 ? "active" : ""}" href="#">${escapeHtml(thread)}</a>`).join("")}</nav><section><p>Workspace</p><span>4 active agents</span><span>12 files referenced</span></section></aside>
-  <section class="main">
-    <header><div><p class="eyebrow">AI workspace</p><h1>Chat with a focused product copilot.</h1></div><button>Share</button></header>
-    <section class="chat-panel">${messages.map((message) => `<article class="${message.role}"><span>${message.role === "ai" ? "AI" : "You"}</span><p>${escapeHtml(message.text)}</p></article>`).join("")}</section>
-    <section class="composer"><div><span></span><p>Ask about product strategy, UX copy, code structure, or launch planning...</p></div><button>Send</button></section>
-  </section>
-  <aside class="inspector"><p class="eyebrow">Context</p><h2>Project memory</h2><div class="metric"><span>Confidence</span><strong>94%</strong></div><div class="metric"><span>Tasks done</span><strong>28</strong></div><div class="files"><h3>Referenced files</h3><span>app/page.tsx</span><span>components/chat-shell.tsx</span><span>lib/prompts.ts</span></div></aside>
-</main>`;
-  const previewCss = `*{box-sizing:border-box}html,body{margin:0;background:#08090d;color:#f8fafc;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,a{font:inherit}.chat-app{min-height:100vh;display:grid;grid-template-columns:280px minmax(0,1fr) 320px;background:radial-gradient(circle at 50% 0%,rgba(56,189,248,.16),transparent 32rem),#08090d}.sidebar,.inspector{border-right:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.04);padding:18px}.inspector{border-left:1px solid rgba(255,255,255,.09);border-right:0}.sidebar strong{display:block;font-size:22px;letter-spacing:-.04em;margin-bottom:18px}.sidebar button,.main header button,.composer button{border:0;border-radius:999px;background:#fff;color:#08090d;cursor:pointer;font-weight:900;padding:12px 16px}.sidebar button{width:100%;margin-bottom:18px}.sidebar nav{display:grid;gap:8px}.sidebar a{border-radius:16px;color:#a1a1aa;text-decoration:none;padding:12px 13px}.sidebar a.active,.sidebar a:hover{background:rgba(255,255,255,.09);color:#fff}.sidebar section,.metric,.files{border:1px solid rgba(255,255,255,.1);border-radius:22px;background:rgba(255,255,255,.045);margin-top:18px;padding:16px}.sidebar section p,.eyebrow{color:#67e8f9;font-size:12px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}.sidebar section span,.files span{display:block;color:#a1a1aa;margin-top:10px}.main{display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-width:0;padding:20px}.main header{display:flex;justify-content:space-between;gap:18px;align-items:start;border:1px solid rgba(255,255,255,.1);border-radius:28px;background:rgba(255,255,255,.05);padding:22px}.main h1{font-size:clamp(32px,4vw,56px);line-height:.95;letter-spacing:-.05em;margin:10px 0 0}.chat-panel{display:grid;align-content:end;gap:14px;overflow:auto;padding:20px 0}.chat-panel article{max-width:760px;border:1px solid rgba(255,255,255,.1);border-radius:24px;background:rgba(255,255,255,.055);padding:16px;box-shadow:0 18px 60px rgba(0,0,0,.18)}.chat-panel article.user{justify-self:end;background:linear-gradient(135deg,rgba(59,130,246,.22),rgba(255,255,255,.06))}.chat-panel span{color:#67e8f9;font-size:12px;font-weight:900;text-transform:uppercase}.chat-panel p{font-size:16px;line-height:1.7;margin:8px 0 0}.composer{display:grid;grid-template-columns:1fr auto;gap:12px;border:1px solid rgba(255,255,255,.12);border-radius:28px;background:rgba(255,255,255,.06);padding:12px}.composer div{display:flex;align-items:center;gap:12px;color:#a1a1aa;padding:0 8px}.composer div span{width:10px;height:10px;border-radius:999px;background:#22c55e;box-shadow:0 0 0 6px rgba(34,197,94,.12)}.metric{display:flex;justify-content:space-between;align-items:center}.metric span{color:#a1a1aa}.metric strong{font-size:28px}.files h3{margin:0 0 10px}@media(max-width:1100px){.chat-app{grid-template-columns:220px minmax(0,1fr)}.inspector{display:none}}@media(max-width:760px){.chat-app{grid-template-columns:1fr}.sidebar{display:none}.main{padding:12px}.main header{flex-direction:column}.composer{grid-template-columns:1fr}.chat-panel article{max-width:100%}}`;
-  const appFile = `const threads = ${JSON.stringify(threads, null, 2)};
-const messages = ${JSON.stringify(messages, null, 2)};
-
-export default function App() {
-  return (
-    <main className="grid min-h-screen bg-[#08090d] text-slate-50 lg:grid-cols-[280px_minmax(0,1fr)_320px]">
-      <aside className="hidden border-r border-white/10 bg-white/[0.04] p-5 lg:block">
-        <strong className="block text-2xl tracking-[-0.04em]">${escapeJsx(brandName)}</strong>
-        <button className="mt-5 w-full rounded-full bg-white px-4 py-3 font-black text-[#08090d]">New chat</button>
-        <nav className="mt-5 grid gap-2">
-          {threads.map((thread, index) => <a className={\`rounded-2xl px-4 py-3 text-sm \${index === 0 ? "bg-white/10 text-white" : "text-slate-400 hover:bg-white/10"}\`} href="#" key={thread}>{thread}</a>)}
-        </nav>
-      </aside>
-      <section className="grid min-w-0 grid-rows-[auto_minmax(0,1fr)_auto] p-4">
-        <header className="rounded-[1.75rem] border border-white/10 bg-white/[0.05] p-6">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-300">AI workspace</p>
-          <h1 className="mt-3 text-4xl font-semibold leading-none tracking-[-0.05em] md:text-6xl">Chat with a focused product copilot.</h1>
-        </header>
-        <section className="grid content-end gap-4 py-5">
-          {messages.map((message) => <article className={\`max-w-3xl rounded-3xl border border-white/10 bg-white/[0.055] p-5 \${message.role === "user" ? "justify-self-end bg-blue-500/15" : ""}\`} key={message.text}><span className="text-xs font-black uppercase text-cyan-300">{message.role === "ai" ? "AI" : "You"}</span><p className="mt-2 leading-7">{message.text}</p></article>)}
-        </section>
-        <section className="grid gap-3 rounded-[1.75rem] border border-white/10 bg-white/[0.06] p-3 md:grid-cols-[1fr_auto]"><div className="px-3 py-3 text-slate-400">Ask about product strategy, UX copy, code structure, or launch planning...</div><button className="rounded-full bg-white px-5 py-3 font-black text-[#08090d]">Send</button></section>
-      </section>
-      <aside className="hidden border-l border-white/10 bg-white/[0.04] p-5 xl:block"><p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-300">Context</p><h2 className="mt-3 text-2xl font-bold">Project memory</h2></aside>
-    </main>
-  );
-}
-`;
-
-  return {
-    title: brandName,
-    summary: `A polished AI chat interface for ${brandName} with sidebar threads, chat timeline, composer, and project context panel.`,
-    previewHtml,
-    previewCss,
-    previewJs: "",
-    files: createViteFiles(appFile, brandName, "# AI chat interface generated by Mosaic.\n"),
-    notes: ["Applied AI chat interface template for reliable fresh generation."],
-  };
-}
-
-function createGenericPremiumGeneration(prompt: string): z.infer<typeof generationSchema> {
-  const title = toTitleCase(createPromptSubject(prompt)) || "Mosaic Project";
-  const previewHtml = `<main class="site"><nav><strong>${escapeHtml(title)}</strong><div><a href="#">Overview</a><a href="#">Features</a><a href="#">Pricing</a><a href="#">FAQ</a></div><button>Get started</button></nav><section class="hero"><p>Premium responsive build</p><h1>A polished first version for ${escapeHtml(prompt)}.</h1><span>Complete sections, realistic content, responsive structure, and modern visual hierarchy.</span><div><button>Start now</button><button class="secondary">View details</button></div></section><section class="grid">${["Clear strategy", "Rich components", "Responsive polish", "Launch-ready copy"].map((item) => `<article><h2>${item}</h2><p>Designed with useful details, balanced spacing, and production-quality visual structure.</p></article>`).join("")}</section><footer><strong>${escapeHtml(title)}</strong><span>Built by Mosaic.</span></footer></main>`;
-  const previewCss = `*{box-sizing:border-box}html,body{margin:0;background:#09090b;color:white;font-family:Inter,Arial,sans-serif}button,a{font:inherit}.site{min-height:100vh;background:radial-gradient(circle at 12% 0%,rgba(34,211,238,.18),transparent 28rem),#09090b;padding:24px}nav,.hero,.grid,footer{max-width:1120px;margin:auto}nav{display:flex;align-items:center;justify-content:space-between;gap:16px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.06);padding:14px 18px}nav div{display:flex;gap:8px;flex-wrap:wrap}a{color:#a1a1aa;text-decoration:none;padding:8px 10px}button{border:0;border-radius:999px;background:white;color:#09090b;font-weight:800;padding:12px 16px}.hero{border:1px solid rgba(255,255,255,.12);border-radius:34px;background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(34,211,238,.12));margin-top:24px;padding:56px}.hero p{color:#67e8f9;font-size:12px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}.hero h1{font-size:clamp(44px,7vw,78px);line-height:.94;letter-spacing:-.05em;margin:14px 0}.hero span{display:block;color:#a1a1aa;font-size:18px;line-height:1.7;max-width:680px}.hero div{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.secondary{background:transparent;border:1px solid rgba(255,255,255,.14);color:white}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.grid article{border:1px solid rgba(255,255,255,.1);border-radius:24px;background:rgba(255,255,255,.055);padding:20px}.grid h2{font-size:20px}.grid p{color:#a1a1aa;line-height:1.6}footer{display:flex;justify-content:space-between;color:#a1a1aa;padding:32px 0}@media(max-width:900px){nav,footer{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.hero{padding:34px}.site{padding:14px}}`;
-  const appFile = `export default function App() {
-  return (
-    <main className="min-h-screen bg-zinc-950 p-4 text-white md:p-6">
-      <nav className="mx-auto flex max-w-6xl flex-col gap-4 rounded-full border border-white/10 bg-white/[0.06] px-6 py-4 md:flex-row md:items-center md:justify-between">
-        <strong>${escapeJsx(title)}</strong>
-        <button className="rounded-full bg-white px-5 py-3 font-black text-zinc-950">Get started</button>
-      </nav>
-      <section className="mx-auto mt-6 max-w-6xl rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/10 to-cyan-400/10 p-9 md:p-14">
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-300">Premium responsive build</p>
-        <h1 className="mt-4 text-5xl font-semibold leading-none tracking-[-0.05em] md:text-7xl">A polished first version for ${escapeJsx(prompt)}.</h1>
-        <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-400">Complete sections, realistic content, responsive structure, and modern visual hierarchy.</p>
-      </section>
-    </main>
-  );
-}
-`;
-
-  return {
-    title,
-    summary: `A polished responsive website generated for: ${prompt}.`,
-    previewHtml,
-    previewCss,
-    previewJs: "",
-    files: createViteFiles(appFile, title, "# Premium generated website fallback.\n"),
-    notes: ["Applied generic quality template because the AI provider response was unavailable or invalid."],
-  };
-}
-
-function createPromptSubject(prompt: string) {
-  return prompt
-    .toLowerCase()
-    .replace(/https?:\/\/\S+/g, "")
-    .replace(/\b(hi|hello|hey|please|can you|could you|make|create|build|generate|design|a|an|the|website|site|app|page|for|me|my|i want|i need)\b/g, " ")
-    .replace(/[^a-z0-9\s-]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, 48);
-}
-
-function toTitleCase(value: string) {
-  return value
-    .split(" ")
-    .filter(Boolean)
-    .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
-    .join(" ");
-}
-
-function createViteFiles(appFile: string, title: string, readme: string): z.infer<typeof generationSchema>["files"] {
-  return [
-    {
-      path: "package.json",
-      content: JSON.stringify(
-        {
-          scripts: { dev: "vite --host 0.0.0.0", build: "vite build", preview: "vite preview" },
-          dependencies: { "@vitejs/plugin-react": "^4.3.1", vite: "^5.4.0", typescript: "^5.6.3", react: "^18.3.1", "react-dom": "^18.3.1" },
-          devDependencies: { tailwindcss: "^3.4.17", autoprefixer: "^10.4.20", postcss: "^8.4.49" },
-        },
-        null,
-        2,
-      ),
-    },
-    { path: "index.html", content: `<title>${escapeHtml(title)}</title><div id="root"></div><script type="module" src="/src/main.jsx"></script>\n` },
-    { path: "src/main.jsx", content: 'import React from "react";\nimport { createRoot } from "react-dom/client";\nimport App from "./App.jsx";\nimport "./index.css";\n\ncreateRoot(document.getElementById("root")).render(<App />);\n' },
-    { path: "src/App.jsx", content: appFile },
-    { path: "src/index.css", content: "@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\nbody { margin: 0; }\n" },
-    { path: "tailwind.config.js", content: "export default { content: ['./index.html', './src/**/*.{js,jsx}'], theme: { extend: {} }, plugins: [] };\n" },
-    { path: "postcss.config.js", content: "export default { plugins: { tailwindcss: {}, autoprefixer: {} } };\n" },
-    { path: "README.md", content: readme },
-  ];
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function escapeJsx(value: string) {
-  return value.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$/g, "\\$").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-function isDeterministicQualityTemplate(generation: z.infer<typeof generationSchema>) {
-  return generation.notes.some((note) => /quality template|youtube clone quality template|premium fashion quality template/i.test(note));
 }
 
 async function improveGenerationQuality({
@@ -1044,9 +396,15 @@ async function generateWithOpenRouter({
         },
         body: JSON.stringify({
           model,
-          temperature: 0.35,
+          temperature: 0.5,
+          top_p: 0.9,
+          max_tokens: Number(process.env.OPENROUTER_MAX_TOKENS ?? 16000),
           response_format: { type: "json_object" },
           messages: [
+            {
+              role: "system",
+              content: `${WEBSITE_GENERATION_SYSTEM_PROMPT}\n\n${PREMIUM_OUTPUT_REQUIREMENTS}\n\nReturn only valid JSON. No markdown. No explanations.`,
+            },
             {
               role: "user",
               content: referenceImage
@@ -1196,9 +554,7 @@ function createGeminiPayload({
 }) {
   const cloneGuidance = getCloneGuidance(prompt);
   const promptAnalysis = analyzePrompt(prompt);
-  const templatePattern = matchTemplatePattern(promptAnalysis);
-  const inspiration = getDesignInspiration(promptAnalysis);
-  const enhancedBrief = buildEnhancedDesignBrief(prompt, promptAnalysis, templatePattern, inspiration);
+  const enhancedBrief = enhanceUserPrompt(prompt);
   const currentProjectContext = currentGeneration
     ? [
         "",
@@ -1221,8 +577,9 @@ function createGeminiPayload({
 
   return {
     generationConfig: {
-      temperature: 0.35,
+      temperature: 0.5,
       topP: 0.9,
+      maxOutputTokens: Number(process.env.GEMINI_MAX_OUTPUT_TOKENS ?? 16000),
       responseMimeType: "application/json",
     },
     contents: [
@@ -1232,6 +589,7 @@ function createGeminiPayload({
           {
             text: [
               WEBSITE_GENERATION_SYSTEM_PROMPT,
+              PREMIUM_OUTPUT_REQUIREMENTS,
               "Return ONLY valid JSON with this shape:",
               '{"title":"string","summary":"string","previewHtml":"string","previewCss":"string","previewJs":"string","files":[{"path":"string","content":"string"}],"notes":["string"]}',
               "First infer the product type, target audience, and primary user action. Then build a complete, realistic React + Tailwind website, app screen, dashboard, landing page, or mini-flow based on the user request.",
@@ -1239,6 +597,11 @@ function createGeminiPayload({
               "If the user asks for a clone, remake the recognizable product pattern as closely as possible within React/Tailwind: layout, navigation, spacing, colors, page density, content types, and core interactions should match the referenced product.",
               "For well-known product clone requests, keep the requested product name in visible UI copy when the user uses that name. Example: a YouTube clone should look like YouTube, say YouTube where appropriate, use video feed/sidebar/top search/player patterns, and should not become MosaicTube.",
               "Do not make a shallow or tiny mockup. For clone requests, include enough visible real estate and realistic repeated content to feel like the actual app: sidebars, top bars, cards/lists, filters/tabs, empty/loading states, and responsive mobile behavior.",
+              "For social/feed clone requests, build the actual product shell: desktop sidebar, main composer/feed, right trends/suggestions column, mobile bottom nav, many realistic posts, handles, avatars, timestamps, replies, reposts, likes, and interaction buttons.",
+              "For video platform clone requests, include a sticky topbar, search, sidebar, category chips, at least 12 realistic video cards, thumbnail art made with CSS gradients, channel avatars, durations, views, and upload times.",
+              "For dashboards, include at least 4 metric cards, a CSS chart, activity feed, filters, and a populated table with realistic rows.",
+              "For ecommerce, include at least 8 products, category chips, product cards with prices, badges, ratings, cart actions, trust cues, testimonials, FAQ, and footer.",
+              "For landing/marketing pages, include at least 6 meaningful sections: navbar, hero, proof/stat strip, feature grid, workflow/product preview, pricing or use cases, testimonials/FAQ, and footer.",
               "For ecommerce/fashion prompts, create a premium brand experience with a clean navbar, luxury hero, product grid, category cards, collection section, editorial lookbook, brand story, testimonials, newsletter signup, and footer.",
               "The files array must represent a proper Vite React project folder structure.",
               "Always include at least these files: package.json, index.html, src/main.jsx, src/App.jsx, src/index.css, tailwind.config.js, postcss.config.js, README.md.",
@@ -1260,6 +623,7 @@ function createGeminiPayload({
               "Never output broken image placeholders. If a thumbnail, avatar, logo, or media image is needed, create it with CSS gradients, inline SVG, emoji-free lettermarks, or data-safe markup instead of <img src> values that may fail.",
               "previewHtml/previewCss/previewJs must be a self-contained static preview of the generated app for an iframe. It should visually match the React output.",
               "CRITICAL PREVIEW RULES: previewHtml must contain visible body markup, not an empty #root element, not JSX, and not a full HTML document. Do not include html/head/body/style/script tags in previewHtml.",
+              "CRITICAL PREVIEW QUALITY: previewHtml should usually be at least 4500 characters and previewCss at least 2500 characters unless the user explicitly asks for something tiny. A shorter response is usually too basic.",
               "previewCss must be ordinary browser CSS without @tailwind directives or style tags. previewJs must be plain browser JavaScript without imports, exports, JSX, TypeScript, or script tags.",
               "The preview may use Tailwind utility classes because the preview iframe loads Tailwind CDN, but include enough visible markup that it renders immediately without React.",
               "The generated React code should be clean, componentized when useful, accessible, responsive, and ready to run with npm install && npm run dev.",
@@ -1272,13 +636,7 @@ function createGeminiPayload({
               "",
               `User prompt: ${prompt}`,
               `Prompt analysis: ${JSON.stringify(promptAnalysis)}`,
-              `Matched template pattern: ${templatePattern.id}`,
-              `Template sections: ${templatePattern.sections.join(", ")}`,
-              `Template design notes: ${templatePattern.designNotes}`,
-              `Template layout rules: ${templatePattern.layoutRules}`,
-              `Template quality rules: ${templatePattern.qualityRules}`,
-              inspiration ? `Design inspiration summary: ${inspiration}` : "Design inspiration summary: local template registry only.",
-              `Enhanced internal design brief: ${enhancedBrief}`,
+              `Enhanced build brief: ${enhancedBrief}`,
               figmaLink ? `Figma/reference link: ${figmaLink}` : "Figma/reference link: none provided",
               referenceImage
                 ? `Reference image attached: ${referenceImage.name}. Use it as visual guidance for layout, spacing, typography, colors, and cloning the design when requested.`
@@ -1318,10 +676,6 @@ function analyzePrompt(prompt: string): PromptAnalysis {
   return { websiteType, visualStyle, requiredSections, brandName, targetAudience, cloneIntent };
 }
 
-function matchTemplatePattern(analysis: PromptAnalysis) {
-  return TEMPLATE_PATTERNS.find((pattern) => pattern.type === analysis.websiteType) ?? TEMPLATE_PATTERNS.find((pattern) => pattern.type === "saas-landing") ?? TEMPLATE_PATTERNS[0];
-}
-
 function getDesignInspiration(analysis: PromptAnalysis) {
   if (process.env.DESIGN_SEARCH_ENABLED?.toLowerCase() !== "true" || !process.env.DESIGN_SEARCH_API_KEY) {
     return "";
@@ -1331,20 +685,18 @@ function getDesignInspiration(analysis: PromptAnalysis) {
   return `Optional design search is configured. Use inspiration query "${query}" only for high-level layout and visual direction; do not copy code or proprietary template assets.`;
 }
 
-function buildEnhancedDesignBrief(prompt: string, analysis: PromptAnalysis, pattern: TemplatePattern, inspiration: string) {
+function buildEnhancedDesignBrief(prompt: string, analysis: PromptAnalysis, inspiration: string) {
   return [
     `Build a polished ${analysis.websiteType.replace(/-/g, " ")} for this request: ${prompt}.`,
     analysis.brandName ? `Use the brand name "${analysis.brandName}" prominently and consistently.` : "Create a fitting brand name only if the user did not provide one.",
     analysis.cloneIntent ? `Clone intent: create a polished ${analysis.cloneIntent}-inspired interface without copying protected assets or external code.` : "",
     `Target audience: ${analysis.targetAudience}.`,
     `Visual style: ${analysis.visualStyle.join(", ")}.`,
-    `Matched local template pattern: ${pattern.id}.`,
-    `Required sections/components: ${pattern.sections.join(", ")}.`,
-    `Design notes: ${pattern.designNotes}`,
-    `Layout rules: ${pattern.layoutRules}`,
-    `Quality rules: ${pattern.qualityRules}`,
+    `Suggested sections/components: ${analysis.requiredSections.join(", ")}.`,
     inspiration,
-    "Generate our own full React + Tailwind implementation and a matching self-contained preview. Do not output a wireframe. Do not output placeholder-only cards. Use populated data arrays and reusable components where useful.",
+    "If this is an app, dashboard, marketplace, or clone request, render the actual application interface instead of a marketing landing page.",
+    "Make the result feel populated and usable on first load: realistic data, multiple states, clear navigation, and enough repeated items to judge the product.",
+    "Generate a fresh full React + Tailwind implementation and a matching self-contained preview. Do not output a wireframe. Do not output placeholder-only cards. Use populated data arrays and reusable components where useful.",
   ]
     .filter(Boolean)
     .join("\n");
@@ -1352,37 +704,36 @@ function buildEnhancedDesignBrief(prompt: string, analysis: PromptAnalysis, patt
 
 function enhanceUserPrompt(prompt: string) {
   const analysis = analyzePrompt(prompt);
-  const pattern = matchTemplatePattern(analysis);
   const inspiration = getDesignInspiration(analysis);
-  const templateBrief = buildEnhancedDesignBrief(prompt, analysis, pattern, inspiration);
+  const buildBrief = buildEnhancedDesignBrief(prompt, analysis, inspiration);
   const normalizedPrompt = prompt.toLowerCase();
   const brandName = analysis.brandName;
 
   if (/yt|youtube/.test(normalizedPrompt) && /clone|app|platform|dashboard/.test(normalizedPrompt)) {
-    return `${templateBrief}\nBuild a polished YouTube-inspired video platform dashboard with a sticky top navbar, left sidebar navigation, search bar, category chips, responsive video grid, realistic thumbnail cards, duration badges, channel avatars, video titles, creators, views, upload time, hover states, dark premium surfaces, dense desktop layout, and mobile layout.`;
+    return `${buildBrief}\nBuild a polished YouTube-inspired video platform dashboard with a sticky top navbar, left sidebar navigation, search bar, category chips, responsive video grid, realistic thumbnail cards, duration badges, channel avatars, video titles, creators, views, upload time, hover states, dark premium surfaces, dense desktop layout, and mobile layout.`;
   }
 
   if (isFashionBrandPrompt(prompt)) {
-    return `${templateBrief}\nBuild a premium modern fashion ecommerce landing page for a clothing brand${brandName ? ` called ${brandName}` : ""} with an elegant navbar, luxury hero section, collection highlights, product cards, category tiles, editorial lookbook, brand story, testimonials, newsletter signup, and footer. Use refined typography, soft gradients, high-quality spacing, responsive grids, polished Tailwind styling, realistic product copy, and a premium brand atmosphere.`;
+    return `${buildBrief}\nBuild a premium modern fashion ecommerce landing page for a clothing brand${brandName ? ` called ${brandName}` : ""} with an elegant navbar, luxury hero section, collection highlights, product cards, category tiles, editorial lookbook, brand story, testimonials, newsletter signup, and footer. Use refined typography, soft gradients, high-quality spacing, responsive grids, polished Tailwind styling, realistic product copy, and a premium brand atmosphere.`;
   }
 
   if (/shop|store|ecommerce|e-commerce|product|cart|checkout/.test(normalizedPrompt)) {
-    return `${templateBrief}\nBuild a premium ecommerce storefront with a polished navbar, hero, category chips, product grid, featured collection, trust badges, testimonials, newsletter, and footer. Use realistic products, prices, merchandising copy, responsive layouts, hover states, and modern Tailwind styling.`;
+    return `${buildBrief}\nBuild a premium ecommerce storefront with a polished navbar, hero, category chips, product grid, featured collection, trust badges, testimonials, newsletter, and footer. Use realistic products, prices, merchandising copy, responsive layouts, hover states, and modern Tailwind styling.`;
   }
 
   if (/dashboard|analytics|admin|crm|chart|metrics/.test(normalizedPrompt)) {
-    return `${templateBrief}\nBuild a production-quality SaaS dashboard with sidebar navigation, topbar, metric cards, fake charts built with CSS, activity feed, customer table, filters, responsive layout, hover states, and realistic operating data.`;
+    return `${buildBrief}\nBuild a production-quality SaaS dashboard with sidebar navigation, topbar, metric cards, fake charts built with CSS, activity feed, customer table, filters, responsive layout, hover states, and realistic operating data.`;
   }
 
   if (/portfolio|personal|resume|designer|developer|creator/.test(normalizedPrompt)) {
-    return `${templateBrief}\nBuild a polished portfolio website with a strong hero, selected work grid, services/process section, case-study cards, testimonials, contact CTA, footer, responsive layout, and refined editorial typography.`;
+    return `${buildBrief}\nBuild a polished portfolio website with a strong hero, selected work grid, services/process section, case-study cards, testimonials, contact CTA, footer, responsive layout, and refined editorial typography.`;
   }
 
   if (prompt.trim().split(/\s+/).length <= 8) {
-    return `${templateBrief}\nBuild a polished, production-quality responsive website for: ${prompt}. Include a premium hero, clear navigation, complete sections, realistic content, strong visual hierarchy, responsive grids, styled buttons, hover states, subtle gradients, cards with depth, and a footer.`;
+    return `${buildBrief}\nBuild a polished, production-quality responsive website for: ${prompt}. Include a premium hero, clear navigation, complete sections, realistic content, strong visual hierarchy, responsive grids, styled buttons, hover states, subtle gradients, cards with depth, and a footer.`;
   }
 
-  return templateBrief;
+  return buildBrief;
 }
 
 function extractBrandName(prompt: string) {
@@ -1424,6 +775,10 @@ function getWebsiteTypeFromPrompt(prompt: string, cloneIntent: string): WebsiteT
   return "saas-landing";
 }
 
+function isFashionBrandPrompt(prompt: string) {
+  return /clothing|fashion|apparel|streetwear|boutique|wear|garment|collection/i.test(prompt);
+}
+
 function getVisualStyleFromPrompt(prompt: string, websiteType: WebsiteType) {
   const styles = new Set<string>();
 
@@ -1433,18 +788,44 @@ function getVisualStyleFromPrompt(prompt: string, websiteType: WebsiteType) {
   if (/futuristic|ai|glass/.test(prompt)) styles.add("futuristic");
   if (/editorial|magazine|fashion/.test(prompt)) styles.add("editorial");
 
-  for (const pattern of TEMPLATE_PATTERNS) {
-    if (pattern.type === websiteType) {
-      pattern.style.forEach((style) => styles.add(style));
-      break;
-    }
-  }
+  const defaults: Record<WebsiteType, string[]> = {
+    "saas-landing": ["startup", "premium", "minimal"],
+    "ai-tool-landing": ["futuristic", "glassmorphism", "premium"],
+    "fashion-ecommerce": ["luxury", "minimal", "editorial"],
+    "restaurant-cafe": ["warm", "editorial", "hospitality"],
+    portfolio: ["editorial", "minimal", "personal"],
+    agency: ["bold", "creative", "premium"],
+    "video-platform-dashboard": ["modern", "dashboard", "media"],
+    "social-feed": ["dark", "social", "dense"],
+    marketplace: ["clean", "marketplace"],
+    "fintech-landing": ["trustworthy", "premium", "data"],
+    "mobile-app-landing": ["consumer", "polished", "playful"],
+    "admin-dashboard": ["operational", "dense", "dark"],
+    generic: ["premium", "responsive"],
+  };
 
+  defaults[websiteType].forEach((style) => styles.add(style));
   return [...styles].slice(0, 5);
 }
 
 function getRequiredSectionsForType(websiteType: WebsiteType) {
-  return matchTemplatePattern({ websiteType, visualStyle: [], requiredSections: [], brandName: "", targetAudience: "", cloneIntent: "" }).sections;
+  const sections: Record<WebsiteType, string[]> = {
+    "saas-landing": ["navbar", "hero", "features", "workflow", "pricing", "faq", "footer"],
+    "ai-tool-landing": ["navbar", "hero", "prompt-console", "capabilities", "workflow", "use-cases", "footer"],
+    "fashion-ecommerce": ["navbar", "hero", "collections", "product-grid", "lookbook", "testimonials", "footer"],
+    "restaurant-cafe": ["navbar", "hero", "hours", "menu", "story", "visit", "footer"],
+    portfolio: ["navbar", "hero", "selected-work", "services", "process", "contact", "footer"],
+    agency: ["navbar", "hero", "services", "case-studies", "process", "contact", "footer"],
+    "video-platform-dashboard": ["topbar", "sidebar", "category-tabs", "video-grid", "video-card", "shorts-row"],
+    "social-feed": ["sidebar", "timeline", "composer", "trends", "who-to-follow", "mobile-tabs"],
+    marketplace: ["navbar", "search", "filters", "listing-grid", "detail-cards", "footer"],
+    "fintech-landing": ["navbar", "hero", "stats", "product-preview", "security", "features", "footer"],
+    "mobile-app-landing": ["navbar", "hero", "phone-mockup", "features", "reviews", "download-cta", "footer"],
+    "admin-dashboard": ["sidebar", "topbar", "metrics", "chart", "activity", "table", "filters"],
+    generic: ["navbar", "hero", "content", "features", "footer"],
+  };
+
+  return sections[websiteType];
 }
 
 function getTargetAudienceForType(websiteType: WebsiteType) {
@@ -1503,6 +884,28 @@ function getCloneGuidance(prompt: string) {
       "- Include category chips, a dense responsive video grid, thumbnail blocks, durations, channel avatars, titles, channel names, views, and upload age.",
       "- Use dark or light YouTube-like surfaces intentionally, with strong contrast and no broken image icons.",
       "- On mobile, collapse the sidebar and keep the feed/search experience usable.",
+    ].join("\n");
+  }
+
+  if (normalizedPrompt.includes("twitter") || /\bx clone\b/.test(normalizedPrompt) || normalizedPrompt.includes("tweet")) {
+    return [
+      "Specific Twitter/X clone requirements:",
+      "- Build a recognizable Twitter/X-style social dashboard, not a generic landing page.",
+      "- Use a three-column desktop layout: left navigation, center timeline, right trends/who-to-follow panel.",
+      "- Include a composer with avatar, audience controls, media/action buttons, and a primary post button.",
+      "- Include at least 8 realistic posts with names, handles, timestamps, post text, optional media-like cards, reply/repost/like/view counts, and hover states.",
+      "- Include trending topics, who-to-follow suggestions, sticky navigation behavior, and mobile bottom tabs.",
+      "- Use dense but readable spacing, dark or light social app surfaces, clear separators, and realistic microcopy.",
+    ].join("\n");
+  }
+
+  if (normalizedPrompt.includes("facebook")) {
+    return [
+      "Specific Facebook clone requirements:",
+      "- Build a recognizable Facebook-style social home feed, not a generic landing page.",
+      "- Include a top navigation bar with search, tabs, action buttons, and profile controls.",
+      "- Include a left shortcuts/sidebar column, central story row/composer/feed, and right contacts/sponsored/trending column on desktop.",
+      "- Include at least 8 realistic posts, reactions, comments, share actions, story cards, group/page suggestions, and responsive mobile stacking.",
     ].join("\n");
   }
 

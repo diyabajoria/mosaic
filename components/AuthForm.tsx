@@ -44,6 +44,21 @@ function GitHubIcon() {
   );
 }
 
+function getSafeCallbackPath(value: string | null, fallbackPath: string, authMode: "login" | "signup") {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) {
+    return fallbackPath;
+  }
+
+  try {
+    const url = new URL(value, "https://mosaic.local");
+
+    url.searchParams.set("auth", authMode);
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return fallbackPath;
+  }
+}
+
 export default function AuthForm({ mode, onModeChange }: AuthFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -58,17 +73,7 @@ export default function AuthForm({ mode, onModeChange }: AuthFormProps) {
     const requestedCallback = searchParams.get("callbackUrl");
     const fallbackPath = `/generate?auth=${isSignup ? "signup" : "login"}`;
 
-    if (!requestedCallback) {
-      return fallbackPath;
-    }
-
-    try {
-      const url = new URL(requestedCallback, "http://localhost");
-      url.searchParams.set("auth", isSignup ? "signup" : "login");
-      return `${url.pathname}${url.search}${url.hash}`;
-    } catch {
-      return fallbackPath;
-    }
+    return getSafeCallbackPath(requestedCallback, fallbackPath, isSignup ? "signup" : "login");
   }, [isSignup, searchParams]);
 
   function switchMode() {
@@ -121,7 +126,7 @@ export default function AuthForm({ mode, onModeChange }: AuthFormProps) {
   }
 
   function handleOAuth(provider: "github" | "google") {
-    void signIn(provider, { callbackUrl });
+    void signIn(provider, { callbackUrl, redirect: true });
   }
 
   return (
